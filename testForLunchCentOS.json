@@ -1,224 +1,268 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "newStorageAccountName": {
-            "type": "string"
-        },
-        "dnsNameForPublicIP": {
-            "type": "string"
-        },
-        "adminUserName": {
-            "type": "string"
-        },
-        "adminPassword": {
-            "type": "securestring"
-        },
-        "imagePublisher": {
-            "type": "string",
-            "defaultValue": "OpenLogic",
-            "metadata": {
-                "description": "Image Publisher"
-            }
-        },
-        "imageOffer": {
-            "type": "string",
-            "defaultValue": "CentOS",
-            "metadata": {
-                "description": "Image Offer"
-            }
-        },
-        "imageSKU": {
-            "type": "string",
-            "defaultValue": "7.0",
-            "metadata": {
-                "description": "Image SKU"
-            }
-        },
-        "location": {
-            "type": "string",
-            "defaultValue": "West US",
-            "allowedValues": [
-                "East US",
-                "West US",
-                "West Europe",
-                "East Asia",
-                "South East Asia"
-            ],
-            "metadata": {
-                "description": "Deployment location"
-            }
-        },
-        "vmSize": {
-            "type": "string",
-            "defaultValue": "Standard_A0"
-        },
-        "publicIPAddressName": {
-            "type": "string",
-            "defaultValue": "myPublicIP"
-        },
-        "vmName": {
-            "type": "string",
-            "defaultValue": "myLinuxVM"
-        },
-        "virtualNetworkName": {
-            "type": "string",
-            "defaultValue": "myVNET"
-        },
-        "nicName": {
-            "type": "string",
-            "defaultValue": "myNIC"
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "deploymentName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Name",
+        "constraints": {
+          "required": true,
+          "regex": "^[a-z0-9A-Z]{1,10}$",
+          "validationMessage": "Only letters and numbers are allowed, and the value must be 1-10 characters long."
         }
-    },
-    "variables": {
-        "addressPrefix": "10.0.0.0/16",
-        "subnet1Name": "Subnet-1",
-        "subnet2Name": "Subnet-2",
-        "subnet1Prefix": "10.0.0.0/24",
-        "subnet2Prefix": "10.0.1.0/24",
-        "vmStorageAccountContainerName": "vhds",
-        "publicIPAddressType": "Dynamic",
-        "storageAccountType": "Standard_LRS",
-        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
-        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]"
-    },
-    "resources": [
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "name": "[parameters('newStorageAccountName')]",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[parameters('location')]",
-            "properties": {
-                "accountType": "[variables('storageAccountType')]"
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('publicIPAddressName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-                "dnsSettings": {
-                    "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
-                }
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "[parameters('virtualNetworkName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('addressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[variables('subnet1Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnet1Prefix')]"
-                        }
-                    },
-                    {
-                        "name": "[variables('subnet2Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnet2Prefix')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[parameters('nicName')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]",
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
-            ],
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
-                            },
-                            "subnet": {
-                                "id": "[variables('subnet1Ref')]"
-                            }
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Compute/virtualMachines",
-            "name": "[parameters('vmName')]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('nicName'))]"
-            ],
-            "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[parameters('vmSize')]"
-                },
-                "osProfile": {
-                    "computerName": "[parameters('vmName')]",
-                    "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
-                },
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "[parameters('imagePublisher')]",
-                        "offer": "[parameters('imageOffer')]",
-                        "sku": "[parameters('imageSKU')]",
-                        "version": "latest"
-                    },
-                    "osDisk": {
-                        "name": "osdisk1",
-                        "vhd": {
-                            "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/','osdisk1spec.vhd')]"
-                        },
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage"
-                    }
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nicName'))]"
-                        }
-                    ]
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('vmName'),'/installmongo')]",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
-            ],
-            "properties": {
-                "publisher": "Microsoft.OSTCExtensions",
-                "type": "CustomScriptForLinux",
-                "typeHandlerVersion": "1.2",
-                "settings": {
-                    "fileUris": [
-                        "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/mongodb-on-centos/mongo-install-centos.sh"
-                    ],
-                    "commandToExecute": "echo \"Hello:\"parameters('vmName') > /tmp/hello"
-                }
-            }
+      },
+      {
+        "name": "userName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "User Name",
+        "constraints": {
+          "required": true,
+          "regex": "^[a-z][a-z0-9]{0,9}$",
+          "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
         }
-    ]
+      },
+      {
+        "name": "admPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "Password",
+          "confirmPassword": "Confirm password"
+        },
+        "constraints": {
+          "required": true,
+          "regex": "",
+          "validationMessage": ""
+        },
+        "options": {
+          "hideConfirmation": false
+        }
+      }
+    ],
+    "steps": [
+      {
+        "name": "clusterConfig",
+        "label": "Cluster settings",
+        "subLabel": {
+          "preValidation": "Configure VM size, DNS names",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Cluster settings",
+        "elements": [
+          {
+            "name": "applianceSize",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Appliance Size",
+            "defaultValue": "1",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "1",
+                  "value": 1
+                },
+                {
+                  "label": "2",
+                  "value": 2
+                },
+                {
+                  "label": "3",
+                  "value": 3
+                },
+                {
+                  "label": "4",
+                  "value": 4
+                },
+                {
+                  "label": "5",
+                  "value": 5
+                }
+              ]
+            }
+          },
+          {
+            "name": "vmSize",
+            "type": "Microsoft.Compute.SizeSelector",
+            "label": "Virtual machine size",
+            "toolTip": "The size of the virtual machine for the email appliance.",
+            "recommendedSizes": [
+              "Standard_A1",
+              "Standard_DS3",
+              "Standard_DS4"
+            ],
+            "osPlatform": "Linux",
+            "constraints": {
+            },
+            "imageReference": {
+              "publisher": "websense-apmailpe",
+              "offer": "ap-data-email-gateway",
+              "sku": "tdeg"
+            }
+          },
+          {
+            "name": "availabilitySet",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Setup availability set",
+            "defaultValue": false,
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "No",
+                  "value": false
+                },
+                {
+                  "label": "Yes",
+                  "value": true
+                }
+              ]
+            }
+          },
+          {
+            "name": "availabilitySetName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Availability Set Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "gwHostName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Gateway DNS Host Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "lbHostName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "LoadBalancer DNS Host Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "lbName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "LoadBalancer Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "vmNamePrefix",
+            "type": "Microsoft.Common.TextBox",
+            "label": "VM Name Prefix",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          }
+        ]
+      },
+      {
+        "name": "advSettings",
+        "label": "Settings",
+        "subLabel": {
+          "preValidation": "Configure optional features",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Settings",
+        "elements": [
+          {
+            "name": "storageAcc",
+            "type": "Microsoft.Storage.StorageAccountSelector",
+            "label": "Storage account",
+            "toolTip": "",
+            "defaultValue": {
+              "name": "esxstorage01",
+              "type": "Premium_LRS"
+            },
+            "constraints": {
+              "allowedTypes": [ ],
+              "excludedTypes": [ ]
+            }
+          },
+          {
+            "name": "vnetwork",
+            "type": "Microsoft.Network.VirtualNetworkCombo",
+            "label": {
+              "virtualNetwork": "Virtual network",
+              "subnets": "Subnets"
+            },
+            "toolTip": {
+              "virtualNetwork": "",
+              "subnets": ""
+            },
+            "defaultValue": {
+              "name": "vnet01",
+              "addressPrefixSize": "/16"
+            },
+            "constraints": {
+              "minAddressPrefixSize": "/24"
+            },
+            "subnets": {
+              "VMsubnet": {
+                "label": "VM Subnet",
+                "defaultValue": {
+                  "name": "vmsubnet",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": true
+                }
+              },
+              "VPNsubnet": {
+                "label": "VPN Clients subnet",
+                "defaultValue": {
+                  "name": "vpnsubnet",
+                  "addressPrefixSize": "/26"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/26",
+                  "minAddressCount": 8,
+                  "requireContiguousAddresses": true
+                }
+              }
+            }
+          }
+        ]
+
+      }
+    ],
+    "outputs": {
+      "location": "[location()]",
+      "deploymentName": "[basics('deploymentName')]",
+      "adminUserName": "[basics('userName')]",
+      "adminPassword": "[basics('admPassword')]",
+      "appianceSize": "[steps('clusterConfig').applianceSize]",
+      "vmSize": "[steps('clusterConfig').vmSize]",
+      "availabilitySet": "[steps('clusterConfig').availabilitySet]",
+      "availabilitySetName": "[steps('clusterConfig').availabilitySetName]",
+      "gwHostName": "[steps('clusterConfig').gwHostName]",
+      "lbHostName": "[steps('clusterConfig').lbHostName]",
+      "lbName": "[steps('clusterConfig').lbName]",
+      "vmNamePrefix": "[steps('clusterConfig').vmNamePrefix]",
+      "storageAcc": "[steps('advSettings').storageAcc.name]",
+      "storageAccExists": "[steps('advSettings').storageAcc.newOrExisting]",
+      "networkName": "[steps('advSettings').vnetwork.name]",
+      "networkExists": "[steps('advSettings').vnetwork.newOrExisting]",
+      "networkAddress": "[steps('advSettings').vnetwork.addressPrefix]",
+      "subnetVMName": "[steps('advSettings').vnetwork.subnets.VMsubnet.name]",
+      "subnetVPNName": "[steps('advSettings').vnetwork.subnets.VPNsubnet.name]",
+      "subnetVMNaddress": "[steps('advSettings').vnetwork.subnets.VMsubnet.addressPrefix]",
+      "subnetVPNaddress": "[steps('advSettings').vnetwork.subnets.VPNsubnet.addressPrefix]"
+    }
+  }
 }
