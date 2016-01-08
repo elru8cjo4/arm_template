@@ -48,9 +48,21 @@
         "subnet1Prefix": "10.0.0.0/24",
         "publicIPAddressType": "Dynamic",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]"
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
+        "storageAccountName": "[concat(parameters('vmName'),'storage']",
+        "storageAccountType": "Standard_LRS"
     },
-    "resources": [{
+    "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[variables('storageAccountName')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[variables('location')]",
+        "properties": {
+          "accountType": "[variables('storageAccountType')]"
+        }
+      },
+      {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('publicIPAddressName')]",
@@ -108,6 +120,7 @@
         "name": "[variables('vmName')]",
         "location": "[variables('location')]",
         "dependsOn": [
+            "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
             "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
         ],
         "properties": {
@@ -129,7 +142,7 @@
                         "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
                     },
                     "vhd": {
-                        "uri": "https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/osDisk.d48fed07-756e-4dfe-a737-8ea245d8289f.vhd"
+                        "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/','osdisk1spec.vhd')]"
                     }
                 }
             },
@@ -161,11 +174,9 @@
                 "fileUris": [
                     "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh"
                 ],
-                "commandToExecute": "sh echoParams.sh \"[parameters('vmName')]\"",
-                "vmName": "[parameters('vmName')]",
-                "adminUserName": "[parameters('adminUserName')]",
-                "adminPassword": "[parameters('adminPassword')]"
-            },
+                "commandToExecute": "sh echoParams.sh [parameters('vmName')] [variables('location')] [parameters('adminUserName')]"
+            }
         }
     }]
 }
+
