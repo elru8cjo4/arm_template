@@ -174,7 +174,10 @@
                 "fileUris": [
                     "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh"
                 ],
-                "commandToExecute": "sh echoParams.sh [parameters('vmName')] [variables('location')] [parameters('adminUserName')]"
+                "commandToExecute": "sh echoParams.sh",
+                "vmName": "[parameters('vmName')]",
+                "adminUserName": "[parameters('adminUserName')]",
+                "adminPassword": "[parameters('adminPassword')]"
             }
         }
     }]
