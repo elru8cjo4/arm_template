@@ -142,7 +142,7 @@
                         "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
                     },
                     "vhd": {
-                        "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/','osdisk1spec.vhd')]"
+                        "uri": "[concat('https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/',variables('vmName'),'-osdisk.vhd')]"
                     }
                 }
             },
