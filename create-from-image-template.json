@@ -49,7 +49,7 @@
         "publicIPAddressType": "Dynamic",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-        "storageAccountName": "mystorage",
+        "storageAccountName": "[concat(replace(parameters('vmName'),'-',''),'srg')]",
         "storageAccountType": "Standard_LRS"
     },
     "resources": [
