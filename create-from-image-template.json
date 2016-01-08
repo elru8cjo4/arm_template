@@ -1,7 +1,11 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {        
+    "parameters": {
+        "vmName": {
+            "type": "string",
+            "defaultValue": "DSM"
+        },
         "dnsNameForPublicIP": {
             "type": "string",
             "metadata": {
@@ -36,7 +40,7 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "publicIPAddressName": "myPublicIP",
-        "vmName": "myVM",
+        "vmName": "[parameters('vmName')]",
         "virtualNetworkName": "myVNET",
         "nicName": "myVMNic",
         "addressPrefix": "10.0.0.0/16",
@@ -149,6 +153,27 @@
                         "enabled": "true",
                         "storageUri": "https://caroltemplate9128.blob.core.windows.net/"
                     }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'),'/echoParams')]",
+            "apiVersion": "2015-05-01-preview",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+                ],
+            "properties": {
+                "publisher": "Microsoft.OSTCExtensions",
+                "type": "CustomScriptForLinux",
+                "typeHandlerVersion": "1.2",
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh"
+                        ""
+                        ],
+                    "commandToExecute": "sh echoParams.sh [parameters('vmName')] [parameters('location')] [parameters('adminUserName')]"
                 }
             }
         }
