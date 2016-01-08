@@ -1,1 +1,1 @@
-echo $@
+echo $@ > /tmp/parameters
