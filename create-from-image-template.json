@@ -39,17 +39,17 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "publicIPAddressName": "myPublicIP",
+        "publicIPAddressName": "[concat(parameters('vmName'),'pubip')]",
         "vmName": "[parameters('vmName')]",
-        "virtualNetworkName": "myVNET",
-        "nicName": "myVMNic",
+        "virtualNetworkName": "[concat(parameters('vmName'),'vnet')]",
+        "nicName": "[concat(parameters('vmName'),'nic')]",
         "addressPrefix": "10.0.0.0/16",
-        "subnet1Name": "Subnet-1",
+        "subnet1Name": "[concat(parameters('vmName'),'sb1')]",
         "subnet1Prefix": "10.0.0.0/24",
         "publicIPAddressType": "Dynamic",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-        "storageAccountName": "[concat(parameters('vmName'),'storage']",
+        "storageAccountName": "[concat(parameters('vmName'),'storage')]",
         "storageAccountType": "Standard_LRS"
     },
     "resources": [
