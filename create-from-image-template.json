@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vmName": {
-            "type": "string",
-            "defaultValue": "DSM"
-        },
+      "vmName": {
+        "type": "string",
+        "defaultValue": "DSM"
+      },
         "dnsNameForPublicIP": {
             "type": "string",
             "metadata": {
@@ -23,18 +23,18 @@
             "metadata": {
                 "description": "Password for the Virtual Machine"
             }
-        },        
+        },
         "vmSize": {
             "type": "string",
             "metadata": {
                 "description": "This is the size of your VM"
             },
-            "defaultValue":"Standard_D1_v2",
+            "defaultValue": "Standard_D1_v2",
             "allowedValues": [
                 "Standard_D1_v2",
                 "Standard_D2_v2",
-                "Standard_D3_v2 "
-            ],
+                "Standard_D3_v2"
+            ]
         }
     },
     "variables": {
@@ -48,134 +48,121 @@
         "subnet1Prefix": "10.0.0.0/24",
         "publicIPAddressType": "Dynamic",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",        
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]"
     },
-    "resources": [
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[variables('publicIPAddressName')]",
-            "location": "[variables('location')]",
-            "properties": {
-                "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-                "dnsSettings": {
-                    "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+    "resources": [{
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('publicIPAddressName')]",
+        "location": "[variables('location')]",
+        "properties": {
+            "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+            "dnsSettings": {
+                "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+            }
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[variables('virtualNetworkName')]",
+        "location": "[variables('location')]",
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "[variables('addressPrefix')]"
+                ]
+            },
+            "subnets": [{
+                "name": "[variables('subnet1Name')]",
+                "properties": {
+                    "addressPrefix": "[variables('subnet1Prefix')]"
                 }
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/virtualNetworks",
-            "name": "[variables('virtualNetworkName')]",
-            "location": "[variables('location')]",
-            "properties": {
-                "addressSpace": {
-                    "addressPrefixes": [
-                        "[variables('addressPrefix')]"
-                    ]
-                },
-                "subnets": [
-                    {
-                        "name": "[variables('subnet1Name')]",
-                        "properties": {
-                            "addressPrefix": "[variables('subnet1Prefix')]"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "apiVersion": "2015-05-01-preview",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[variables('nicName')]",
-            "location": "[variables('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-            ],
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
-                            },
-                            "subnet": {
-                                "id": "[variables('subnet1Ref')]"
-                            }
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "apiVersion": "2015-06-15",
-            "type": "Microsoft.Compute/virtualMachines",
-            "name": "[variables('vmName')]",
-            "location": "[variables('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
-            ],
-            "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[parameters('vmSize')]"
-                },
-                "osProfile": {
-                    "computerName": "[variables('vmName')]",
-                    "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
-                },
-                "storageProfile": {
-                    "osDisk": {
-                        "name": "[concat(variables('vmName'),'-osDisk')]",
-                        "osType": "linux",
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage",
-                        "image": {
-                            "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
-                        },
-                        "vhd": {
-                            "uri": "https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/osDisk.d48fed07-756e-4dfe-a737-8ea245d8289f.vhd"
-                        }
-                    }
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
-                        }
-                    ]
-                },
-                "diagnosticsProfile": {
-                    "bootDiagnostics": {
-                        "enabled": "true",
-                        "storageUri": "https://caroltemplate9128.blob.core.windows.net/"
+            }]
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('nicName')]",
+        "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+            "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+        ],
+        "properties": {
+            "ipConfigurations": [{
+                "name": "ipconfig1",
+                "properties": {
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                    },
+                    "subnet": {
+                        "id": "[variables('subnet1Ref')]"
                     }
                 }
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('vmName'),'/echoParams')]",
-            "apiVersion": "2015-05-01-preview",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
-                ],
-            "properties": {
-                "publisher": "Microsoft.OSTCExtensions",
-                "type": "CustomScriptForLinux",
-                "typeHandlerVersion": "1.2",
-                "settings": {
-                    "fileUris": [
-                        "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh"
-                        ""
-                        ],
-                    "commandToExecute": "sh echoParams.sh [parameters('vmName')] [parameters('location')] [parameters('adminUserName')]"
+            }]
+        }
+    }, {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('vmName')]",
+        "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": "[parameters('vmSize')]"
+            },
+            "osProfile": {
+                "computerName": "[variables('vmName')]",
+                "adminUsername": "[parameters('adminUsername')]",
+                "adminPassword": "[parameters('adminPassword')]"
+            },
+            "storageProfile": {
+                "osDisk": {
+                    "name": "[concat(variables('vmName'),'-osDisk')]",
+                    "osType": "linux",
+                    "caching": "ReadWrite",
+                    "createOption": "FromImage",
+                    "image": {
+                        "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
+                    },
+                    "vhd": {
+                        "uri": "https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/osDisk.d48fed07-756e-4dfe-a737-8ea245d8289f.vhd"
+                    }
+                }
+            },
+            "networkProfile": {
+                "networkInterfaces": [{
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                }]
+            },
+            "diagnosticsProfile": {
+                "bootDiagnostics": {
+                    "enabled": "true",
+                    "storageUri": "https://caroltemplate9128.blob.core.windows.net/"
                 }
             }
         }
-    ]
+    }, {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('vmName'),'/echoParams')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        ],
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.2",
+            "settings": {
+                "fileUris": [
+                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh"
+                ],
+                "commandToExecute": "sh echoParams.sh [parameters('vmName')] [parameters('location')] [parameters('adminUserName')]"
+            }
+        }
+    }]
 }
