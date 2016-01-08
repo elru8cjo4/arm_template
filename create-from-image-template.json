@@ -130,10 +130,10 @@
                         "caching": "ReadWrite",
                         "createOption": "FromImage",
                         "image": {
-                            "uri": "https://carolarmdsm9989.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/centos-osDisk.839f74c6-7d29-4321-a584-40b27ee3d333.vhd"
+                            "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
                         },
                         "vhd": {
-                            "uri": "https://carolarmdsm9989.blob.core.windows.net/vmcontainer8a6f9b1d-9ded-4728-94de-e8b447106030/osDisk.8a6f9b1d-9ded-4728-94de-e8b447106030.vhd"
+                            "uri": "https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/osDisk.d48fed07-756e-4dfe-a737-8ea245d8289f.vhd"
                         }
                     }
                 },
@@ -147,7 +147,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": "true",
-                        "storageUri": "https://carolarmdsm9989.blob.core.windows.net/"
+                        "storageUri": "https://caroltemplate9128.blob.core.windows.net/"
                     }
                 }
             }
