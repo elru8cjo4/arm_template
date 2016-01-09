@@ -24,16 +24,40 @@
                 "description": "Password for the Virtual Machine"
             }
         },
+        "databaseServer": {
+            "type": "string",
+            "metadata": {
+                "description": "IP or DNS of Database Server"
+            }
+        },
+        "databaseName": {
+            "type": "string",
+            "metadata": {
+                "description": "Database Name"
+            }
+        },
+        "databaseUserName": {
+            "type": "string",
+            "metadata": {
+                "description": "Database user name"
+            }
+        },
+        "databaseUserPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Database user password"
+            }
+        },
         "vmSize": {
             "type": "string",
             "metadata": {
                 "description": "This is the size of your VM"
             },
-            "defaultValue": "Standard_D1_v2",
+            "defaultValue": "Standard_D2",
             "allowedValues": [
-                "Standard_D1_v2",
-                "Standard_D2_v2",
-                "Standard_D3_v2"
+                "Standard_D2",
+                "Standard_D3",
+                "Standard_D4"
             ]
         }
     },
@@ -177,7 +201,11 @@
                 "commandToExecute": "sh echoParams.sh",
                 "vmName": "[parameters('vmName')]",
                 "adminUserName": "[parameters('adminUserName')]",
-                "adminPassword": "[parameters('adminPassword')]"
+                "adminPassword": "[parameters('adminPassword')]",
+                "databaseServer": "[parameters('databaseServer')]",
+                "databaseName": "[paramters('databaseName')]",
+                "databaseUserName": "[parameters('databaseUserName')]",
+                "databaseUserPassword": "[parameters('databaseUserPassword')]"
             }
         }
     }]
