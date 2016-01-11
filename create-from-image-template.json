@@ -196,7 +196,8 @@
             "typeHandlerVersion": "1.2",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh"
+                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh",
+                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/dsminstall.prop"
                 ],
                 "commandToExecute": "sh echoParams.sh",
                 "vmName": "[parameters('vmName')]",
