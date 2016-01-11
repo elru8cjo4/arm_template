@@ -203,7 +203,7 @@
                 "adminUserName": "[parameters('adminUserName')]",
                 "adminPassword": "[parameters('adminPassword')]",
                 "databaseServer": "[parameters('databaseServer')]",
-                "databaseName": "[paramters('databaseName')]",
+                "databaseName": "[parameters('databaseName')]",
                 "databaseUserName": "[parameters('databaseUserName')]",
                 "databaseUserPassword": "[parameters('databaseUserPassword')]"
             }
