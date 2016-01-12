@@ -111,7 +111,7 @@
             "subnets": [{
                 "name": "[variables('subnet1Name')]",
                 "properties": {
-                    "addressPrefix": "[variables('subnet1Prefix')]",
+                    "addressPrefix": "[variables('subnet1Prefix')]"
                 }
             }]
         }
@@ -122,7 +122,7 @@
         "location": "[variables('location')]",
         "dependsOn": [
             "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-            "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
             "[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('nicName'),'-NSG'))]"
 
         ],
