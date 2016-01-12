@@ -1,7 +1,6 @@
 AddressAndPortsScreen.ManagerAddress=%ManagerAddress%
 AddressAndPortsScreen.NewNode=True
 UpgradeVerificationScreen.Overwrite=False
-LicenseScreen.License.-1=DX-YBGY-P58WS-36CMA-5PJ2D-RE58Z-RKMYC
 DatabaseScreen.DatabaseType=Microsoft SQL Server
 DatabaseScreen.Hostname=%databaseServer%
 DatabaseScreen.Transport=TCP
