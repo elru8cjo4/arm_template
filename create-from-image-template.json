@@ -150,9 +150,6 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[concat(variables('nicName'),'-NSG')]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/',variables('nicName'))]"
-      ],
       "properties": {
         "securityRules": [
           {
