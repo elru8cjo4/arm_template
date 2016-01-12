@@ -1,4 +1,4 @@
-AddressAndPortsScreen.ManagerAddress=%ManagerAddress%
+AddressAndPortsScreen.ManagerAddress=%managerAddress%
 AddressAndPortsScreen.NewNode=True
 UpgradeVerificationScreen.Overwrite=False
 DatabaseScreen.DatabaseType=Microsoft SQL Server

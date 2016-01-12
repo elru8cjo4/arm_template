@@ -102,9 +102,6 @@
         "type": "Microsoft.Network/virtualNetworks",
         "name": "[variables('virtualNetworkName')]",
         "location": "[variables('location')]",
-        "dependsOn": [
-            "[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('nicName'),'-NSG'))]"
-        ],
         "properties": {
             "addressSpace": {
                 "addressPrefixes": [
@@ -115,9 +112,6 @@
                 "name": "[variables('subnet1Name')]",
                 "properties": {
                     "addressPrefix": "[variables('subnet1Prefix')]",
-                    "networkSecurityGroup": {
-                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('nicName'),'-NSG'))]"
-                    }
                 }
             }]
         }
@@ -129,8 +123,13 @@
         "dependsOn": [
             "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
             "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            "[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('nicName'),'-NSG'))]"
+
         ],
         "properties": {
+            "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('nicName'),'-NSG'))]"
+            },
             "ipConfigurations": [{
                 "name": "ipconfig1",
                 "properties": {

@@ -26,5 +26,6 @@ getParam "databaseUserPassword"
 
 managerAddress=`curl http://ifconfig.co/?cmd=curl`
 sed -i -e "s/%managerAddress%/$managerAddress/g" dsminstall.prop
+cp dsminstall.prop /tmp/dsminstall.prop
 
 /tmp/Manager-Linux-9.6.3175.x64.sh -q -console -varfile dsminstall.prop
