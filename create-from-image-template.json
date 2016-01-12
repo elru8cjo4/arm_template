@@ -182,11 +182,24 @@
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "4120",
+              "destinationPortRange": "4118",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "*",
               "access": "Allow",
               "priority": 1200,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "allow-inbound-dsmheartbeat",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4120",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1300,
               "direction": "Inbound"
             }
           }
