@@ -102,6 +102,9 @@
         "type": "Microsoft.Network/virtualNetworks",
         "name": "[variables('virtualNetworkName')]",
         "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('nicName'),'-NSG'))]"
+        ],
         "properties": {
             "addressSpace": {
                 "addressPrefixes": [
@@ -111,7 +114,10 @@
             "subnets": [{
                 "name": "[variables('subnet1Name')]",
                 "properties": {
-                    "addressPrefix": "[variables('subnet1Prefix')]"
+                    "addressPrefix": "[variables('subnet1Prefix')]",
+                    "networkSecurityGroup": {
+                        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('nicName'),'-NSG'))]"
+                    }
                 }
             }]
         }
