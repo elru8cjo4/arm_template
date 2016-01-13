@@ -24,7 +24,7 @@
                 "description": "Password for the Virtual Machine"
             }
         },
-        "databaseServer": {
+        "databaseName": {
             "type": "string",
             "metadata": {
                 "description": "IP or DNS of Database Server"
@@ -69,7 +69,7 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "storageAccountName": "[concat(replace(parameters('vmName'),'-',''),'srg')]",
         "storageAccountType": "Standard_LRS",
-        "databaseServer": "[concat(parameters('vmName'),'-sql')]"
+        "serverName": "[concat(parameters('vmName'),'-sql')]"
     },
     "resources": [
       {
@@ -98,7 +98,7 @@
             "location": "[variables('location')]",
             "apiVersion": "2014-04-01-preview",
             "dependsOn": [
-                "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+                "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
                 ],
             "properties": {
                 "edition": "Standard",
@@ -110,7 +110,7 @@
         {
             "apiVersion": "2014-04-01-preview",
             "dependsOn": [
-                "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+                "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
                 ],
             "location": "[variables('location')]",
             "name": "AllowAllAzureIps",
@@ -307,7 +307,7 @@
                 "vmName": "[parameters('vmName')]",
                 "adminUserName": "[parameters('adminUserName')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "databaseServer": "[parameters('databaseServer')]",
+                "serverName": "[variables('serverName')]",
                 "databaseName": "[parameters('databaseName')]",
                 "databaseUserName": "[parameters('databaseUserName')]",
                 "databaseUserPassword": "[parameters('databaseUserPassword')]"
