@@ -69,7 +69,8 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "storageAccountName": "[concat(replace(parameters('vmName'),'-',''),'srg')]",
         "storageAccountType": "Standard_LRS",
-        "serverName": "[concat(parameters('vmName'),'-sql')]"
+        "serverName": "[concat(parameters('vmName'),'-sql')]",
+        "databaseServer": "[concat(variables('serverName'),'.database.windows.net')]"
     },
     "resources": [
       {
@@ -303,11 +304,11 @@
                     "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh",
                     "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/dsminstall.prop"
                 ],
-                "commandToExecute": "cat echoParams.sh",
+                "commandToExecute": "sh echoParams.sh",
                 "vmName": "[parameters('vmName')]",
                 "adminUserName": "[parameters('adminUserName')]",
                 "adminPassword": "[parameters('adminPassword')]",
-                "serverName": "[variables('serverName')]",
+                "databaseServer": "[variables('databaseServer')]",
                 "databaseName": "[parameters('databaseName')]",
                 "databaseUserName": "[parameters('databaseUserName')]",
                 "databaseUserPassword": "[parameters('databaseUserPassword')]"
