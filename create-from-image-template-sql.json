@@ -250,7 +250,8 @@
         "location": "[variables('location')]",
         "dependsOn": [
             "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-            "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+            "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
+            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
         ],
         "properties": {
             "hardwareProfile": {
@@ -311,7 +312,9 @@
                 "databaseServer": "[variables('databaseServer')]",
                 "databaseName": "[parameters('databaseName')]",
                 "databaseUserName": "[parameters('databaseUserName')]",
-                "databaseUserPassword": "[parameters('databaseUserPassword')]"
+                "databaseUserPassword": "[parameters('databaseUserPassword')]",
+                "refDatabaseServer": "[reference(concat('Microsoft.Sql/servers/', variables('serverName'))).fullyQualifiedDomainName]",
+                "subscriptionId": "[subscription().subscriptionId]"
             }
         }
     }]
