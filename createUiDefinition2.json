@@ -1,0 +1,263 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "deploymentName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Name",
+        "constraints": {
+          "required": true,
+          "regex": "^[a-z0-9A-Z-]{1,10}$",
+          "validationMessage": "Only letters and numbers are allowed, and the value must be 1-10 characters long."
+        }
+      },
+      {
+        "name": "userName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "User Name",
+        "constraints": {
+          "required": true,
+          "regex": "^[a-z][a-z0-9]{0,9}$",
+          "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+        }
+      },
+      {
+        "name": "admPassword",
+        "type": "Microsoft.Common.PasswordBox",
+        "label": {
+          "password": "Password",
+          "confirmPassword": "Confirm password"
+        },
+        "constraints": {
+          "required": true,
+          "regex": "",
+          "validationMessage": ""
+        },
+        "options": {
+          "hideConfirmation": false
+        }
+      }
+    ],
+    "steps": [
+      {
+        "name": "dsmConfig",
+        "label": "Trend Micro Deep Security Manager Settings",
+        "subLabel": {
+          "preValidation": "Configure DNS names, DSM settings",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "DSM settings",
+        "elements": [
+          {
+            "name": "publicIPAddressName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Public IP Address Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-zA-Z0-9-]{0,14}[a-zA-Z0-9]$",
+              "validationMessage": "Only letters, numbers, and '-' are allowed, and the value must be 1-16 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "vmSize",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Grant Agent Seats",
+            "defaultValue": "25",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "25",
+                  "value": "Standard_D2_v2"
+                },
+                {
+                  "label": "50",
+                  "value": "Standard_D3_v2"              
+                },
+                {
+                  "label": "100",
+                  "value": "Standard_D4_v2"
+                },
+                {
+                  "label": "200",
+                  "value": "Standard_D5_v2"
+                }
+              ]
+            }
+          },
+          {
+            "name": "dsmAdminName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Deep Security Admin Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dsmAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Deep Security Admin Password",
+              "confirmPassword": "Confirm password"
+            },
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          },
+          {
+            "name": "createNewSQL",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Create a New Microsoft SQL",
+            "defaultValue": true,
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": true
+                },
+                {
+                  "label": "No",
+                  "value": false
+                }
+              ]
+            }
+          },
+          {
+            "name": "dbName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dbAdminName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Admin Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dbAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Database Admin Password",
+              "confirmPassword": "Confirm password"
+            },
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "advSettings",
+        "label": "Settings",
+        "subLabel": {
+          "preValidation": "Configure optional features",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Settings",
+        "elements": [
+          {
+            "name": "storageAcc",
+            "type": "Microsoft.Storage.StorageAccountSelector",
+            "label": "Storage account",
+            "toolTip": "",
+            "defaultValue": {
+              "name": "storage01",
+              "type": "Premium_LRS"
+            }
+          },
+          {
+            "name": "vnetwork",
+            "type": "Microsoft.Network.VirtualNetworkCombo",
+            "label": {
+              "virtualNetwork": "Virtual network",
+              "subnets": "Subnets"
+            },
+            "toolTip": {
+              "virtualNetwork": "",
+              "subnets": ""
+            },
+            "defaultValue": {
+              "name": "vnet01",
+              "addressPrefixSize": "/16"
+            },
+            "constraints": {
+              "minAddressPrefixSize": "/24"
+            },
+            "subnets": {
+              "VMsubnet": {
+                "label": "VM Subnet",
+                "defaultValue": {
+                  "name": "vmsubnet",
+                  "addressPrefixSize": "/24"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/24",
+                  "minAddressCount": 12,
+                  "requireContiguousAddresses": true
+                }
+              },
+              "VPNsubnet": {
+                "label": "VPN Clients subnet",
+                "defaultValue": {
+                  "name": "vpnsubnet",
+                  "addressPrefixSize": "/26"
+                },
+                "constraints": {
+                  "minAddressPrefixSize": "/26",
+                  "minAddressCount": 8,
+                  "requireContiguousAddresses": true
+                }
+              }
+            }
+          }
+        ]
+
+      }
+    ],
+    "outputs": {
+      "location": "[location()]",
+      "deploymentName": "[basics('deploymentName')]",
+      "vmAdminName": "[basics('userName')]",
+      "vmAdminPassword": "[basics('admPassword')]",
+      "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
+      "vmSize": "[steps('dsmConfig').vmSize]",
+      "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
+      "dsmAdminName": "[steps('dsmConfig').dsmAdminName]",
+      "dsmAdminPassword": "[steps('dsmConfig').dsmAdminPassword]",
+      "createNewSQL": "[steps('dsmConfig').createNewSQL]",
+      "dbName": "[steps('dsmConfig').dbName]",
+      "dbAdminName": "[steps('dsmConfig').dbAdminName]",
+      "dbAdminPassword": "[steps('dsmConfig').dbAdminPassword]",
+      "storageAcc": "[steps('advSettings').storageAcc.name]",
+      "networkName": "[steps('advSettings').vnetwork.name]",
+      "networkExists": "[steps('advSettings').vnetwork.newOrExisting]",
+      "networkAddress": "[steps('advSettings').vnetwork.addressPrefix]",
+      "subnetVMName": "[steps('advSettings').vnetwork.subnets.VMsubnet.name]",
+      "subnetVPNName": "[steps('advSettings').vnetwork.subnets.VPNsubnet.name]",
+      "subnetVMNaddress": "[steps('advSettings').vnetwork.subnets.VMsubnet.addressPrefix]",
+      "subnetVPNaddress": "[steps('advSettings').vnetwork.subnets.VPNsubnet.addressPrefix]"
+    }
+  }
+}
