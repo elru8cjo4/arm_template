@@ -1,0 +1,318 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vmName": {
+        "type": "string",
+        "defaultValue": "DSM"
+      },
+        "dnsNameForPublicIP": {
+            "type": "string",
+            "metadata": {
+                "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+            }
+        },
+        "adminUserName": {
+            "type": "string",
+            "metadata": {
+                "description": "UserName for the Virtual Machine"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Virtual Machine"
+            }
+        },
+        "databaseServer": {
+            "type": "string",
+            "metadata": {
+                "description": "IP or DNS of Database Server"
+            }
+        },
+        "databaseUserName": {
+            "type": "string",
+            "metadata": {
+                "description": "Database user name"
+            }
+        },
+        "databaseUserPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Database user password"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the size of your VM"
+            },
+            "defaultValue": "Standard_D2",
+            "allowedValues": [
+                "Standard_D2",
+                "Standard_D3",
+                "Standard_D4"
+            ]
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "publicIPAddressName": "[concat(parameters('vmName'),'pubip')]",
+        "vmName": "[parameters('vmName')]",
+        "virtualNetworkName": "[concat(parameters('vmName'),'vnet')]",
+        "nicName": "[concat(parameters('vmName'),'nic')]",
+        "addressPrefix": "10.0.0.0/16",
+        "subnet1Name": "[concat(parameters('vmName'),'sb1')]",
+        "subnet1Prefix": "10.0.0.0/24",
+        "publicIPAddressType": "Dynamic",
+        "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
+        "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
+        "storageAccountName": "[concat(replace(parameters('vmName'),'-',''),'srg')]",
+        "storageAccountType": "Standard_LRS",
+        "databaseServer": "[concat(parameters('vmName'),'-sql')]"
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "name": "[variables('storageAccountName')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[variables('location')]",
+        "properties": {
+          "accountType": "[variables('storageAccountType')]"
+        }
+      },
+      {
+        "name": "[variables('serverName')]",
+        "type": "Microsoft.Sql/servers",
+        "location": "[variables('location')]",
+        "apiVersion": "2014-04-01-preview",
+        "properties": {
+            "administratorLogin": "[parameters('databaseUserName')]",
+            "administratorLoginPassword": "[parameters('databaseUserPassword')]",
+            "version": "12.0"
+        },
+        "resources": [
+        {
+            "name": "[parameters('databaseName')]",
+            "type": "databases",
+            "location": "[variables('location')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+                ],
+            "properties": {
+                "edition": "Standard",
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": "1073741824",
+                "requestedServiceObjectiveName": "S0"
+            }
+        },
+        {
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [
+                "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+                ],
+            "location": "[variables('location')]",
+            "name": "AllowAllAzureIps",
+            "properties": {
+                "endIpAddress": "0.0.0.0",
+                "startIpAddress": "0.0.0.0"
+            },
+            "type": "firewallrules"
+        }
+        ]
+      },
+      {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/publicIPAddresses",
+        "name": "[variables('publicIPAddressName')]",
+        "location": "[variables('location')]",
+        "properties": {
+            "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+            "dnsSettings": {
+                "domainNameLabel": "[toLower(replace(parameters('dnsNameForPublicIP'),'-',''))]"
+            }
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/virtualNetworks",
+        "name": "[variables('virtualNetworkName')]",
+        "location": "[variables('location')]",
+        "properties": {
+            "addressSpace": {
+                "addressPrefixes": [
+                    "[variables('addressPrefix')]"
+                ]
+            },
+            "subnets": [{
+                "name": "[variables('subnet1Name')]",
+                "properties": {
+                    "addressPrefix": "[variables('subnet1Prefix')]"
+                }
+            }]
+        }
+    }, {
+        "apiVersion": "2015-05-01-preview",
+        "type": "Microsoft.Network/networkInterfaces",
+        "name": "[variables('nicName')]",
+        "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
+            "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
+            "[concat('Microsoft.Network/networkSecurityGroups/', concat(variables('nicName'),'-NSG'))]"
+
+        ],
+        "properties": {
+            "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', concat(variables('nicName'),'-NSG'))]"
+            },
+            "ipConfigurations": [{
+                "name": "ipconfig1",
+                "properties": {
+                    "privateIPAllocationMethod": "Dynamic",
+                    "publicIPAddress": {
+                        "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
+                    },
+                    "subnet": {
+                        "id": "[variables('subnet1Ref')]"
+                    }
+                }
+            }]
+        }
+    }, 
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[concat(variables('nicName'),'-NSG')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "allow-inbound-ssh",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1000,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "allow-inbound-dsmportal",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "allow-inbound-dsmheartbeat",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4118",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1200,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "allow-inbound-dsmheartbeat",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4120",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1300,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Compute/virtualMachines",
+        "name": "[variables('vmName')]",
+        "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+            "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        ],
+        "properties": {
+            "hardwareProfile": {
+                "vmSize": "[parameters('vmSize')]"
+            },
+            "osProfile": {
+                "computerName": "[variables('vmName')]",
+                "adminUsername": "[parameters('adminUsername')]",
+                "adminPassword": "[parameters('adminPassword')]"
+            },
+            "storageProfile": {
+                "osDisk": {
+                    "name": "[concat(variables('vmName'),'-osDisk')]",
+                    "osType": "linux",
+                    "caching": "ReadWrite",
+                    "createOption": "FromImage",
+                    "image": {
+                        "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
+                    },
+                    "vhd": {
+                        "uri": "[concat('https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/',variables('vmName'),'-osdisk.vhd')]"
+                    }
+                }
+            },
+            "networkProfile": {
+                "networkInterfaces": [{
+                    "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                }]
+            },
+            "diagnosticsProfile": {
+                "bootDiagnostics": {
+                    "enabled": "true",
+                    "storageUri": "https://caroltemplate9128.blob.core.windows.net/"
+                }
+            }
+        }
+    }, {
+        "type": "Microsoft.Compute/virtualMachines/extensions",
+        "name": "[concat(parameters('vmName'),'/echoParams')]",
+        "apiVersion": "2015-05-01-preview",
+        "location": "[variables('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        ],
+        "properties": {
+            "publisher": "Microsoft.OSTCExtensions",
+            "type": "CustomScriptForLinux",
+            "typeHandlerVersion": "1.2",
+            "settings": {
+                "fileUris": [
+                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh",
+                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/dsminstall.prop"
+                ],
+                "commandToExecute": "cat echoParams.sh",
+                "vmName": "[parameters('vmName')]",
+                "adminUserName": "[parameters('adminUserName')]",
+                "adminPassword": "[parameters('adminPassword')]",
+                "databaseServer": "[parameters('databaseServer')]",
+                "databaseName": "[parameters('databaseName')]",
+                "databaseUserName": "[parameters('databaseUserName')]",
+                "databaseUserPassword": "[parameters('databaseUserPassword')]"
+            }
+        }
+    }]
+}
+
