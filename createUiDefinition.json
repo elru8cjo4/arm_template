@@ -42,85 +42,54 @@
     ],
     "steps": [
       {
-        "name": "clusterConfig",
-        "label": "Cluster settings",
+        "name": "dsmConfig",
+        "label": "Trend Micro Deep Security Manager Settings",
         "subLabel": {
-          "preValidation": "Configure VM size, DNS names",
+          "preValidation": "Configure DNS names, DSM settings",
           "postValidation": "Done"
         },
-        "bladeTitle": "Cluster settings",
+        "bladeTitle": "DSM settings",
         "elements": [
           {
-            "name": "applianceSize",
-            "type": "Microsoft.Common.DropDown",
-            "label": "Appliance Size",
-            "defaultValue": "1",
+            "name": "publicIPAddressName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Public IP Address Name",
             "constraints": {
-              "allowedValues": [
-                {
-                  "label": "1",
-                  "value": 1
-                },
-                {
-                  "label": "2",
-                  "value": 2
-                },
-                {
-                  "label": "3",
-                  "value": 3
-                },
-                {
-                  "label": "4",
-                  "value": 4
-                },
-                {
-                  "label": "5",
-                  "value": 5
-                }
-              ]
+              "required": true,
+              "regex": "^[a-z][a-zA-Z0-9-]{0,14}[a-zA-Z0-9]$",
+              "validationMessage": "Only letters, numbers, and '-' are allowed, and the value must be 1-16 characters long and starts with a letter."
             }
           },
           {
             "name": "vmSize",
-            "type": "Microsoft.Compute.SizeSelector",
-            "label": "Virtual machine size",
-            "toolTip": "The size of the virtual machine for the email appliance.",
-            "recommendedSizes": [
-              "Standard_A1",
-              "Standard_DS3",
-              "Standard_DS4"
-            ],
-            "osPlatform": "Linux",
-            "constraints": {
-            },
-            "imageReference": {
-              "publisher": "websense-apmailpe",
-              "offer": "ap-data-email-gateway",
-              "sku": "tdeg"
-            }
-          },
-          {
-            "name": "availabilitySet",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Setup availability set",
-            "defaultValue": false,
+            "type": "Microsoft.Common.DropDown",
+            "label": "Grant Agent Seats",
+            "defaultValue": "Standard_D2_v2",
             "constraints": {
               "allowedValues": [
                 {
-                  "label": "No",
-                  "value": false
+                  "label": "25",
+                  "value": "Standard_D2_v2"
                 },
                 {
-                  "label": "Yes",
-                  "value": true
+                  "label": "50",
+                  "value": "Standard_D3_v2"              
+                },
+                {
+                  "label": "100",
+                  "value": "Standard_D4_v2"
+                },
+                {
+                  "label": "200",
+                  "value": "Standard_D5_v2"
                 }
               ]
             }
           },
           {
-            "name": "availabilitySetName",
+            "name": "dsmAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Availability Set Name",
+            "label": "Deep Security Admin Name",
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -128,9 +97,43 @@
             }
           },
           {
-            "name": "gwHostName",
+            "name": "dsmAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Deep Security Admin Password",
+              "confirmPassword": "Confirm password"
+            },
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          },
+          {
+            "name": "createNewSQL",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Create a New Microsoft SQL",
+            "defaultValue": true,
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": true
+                },
+                {
+                  "label": "No",
+                  "value": false
+                }
+              ]
+            }
+          },
+          {
+            "name": "dbName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Gateway DNS Host Name",
+            "label": "Database Name",
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -138,9 +141,9 @@
             }
           },
           {
-            "name": "lbHostName",
+            "name": "dbAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "LoadBalancer DNS Host Name",
+            "label": "Database Admin Name",
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -148,23 +151,19 @@
             }
           },
           {
-            "name": "lbName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "LoadBalancer Name",
+            "name": "dbAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Database Admin Password",
+              "confirmPassword": "Confirm password"
+            },
             "constraints": {
               "required": true,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
-              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
-            }
-          },
-          {
-            "name": "vmNamePrefix",
-            "type": "Microsoft.Common.TextBox",
-            "label": "VM Name Prefix",
-            "constraints": {
-              "required": true,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
-              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
             }
           }
         ]
@@ -184,7 +183,7 @@
             "label": "Storage account",
             "toolTip": "",
             "defaultValue": {
-              "name": "esxstorage01",
+              "name": "storage01",
               "type": "Premium_LRS"
             },
             "constraints": {
@@ -244,16 +243,17 @@
     "outputs": {
       "location": "[location()]",
       "deploymentName": "[basics('deploymentName')]",
-      "adminUserName": "[basics('userName')]",
-      "adminPassword": "[basics('admPassword')]",
-      "appianceSize": "[steps('clusterConfig').applianceSize]",
-      "vmSize": "[steps('clusterConfig').vmSize]",
-      "availabilitySet": "[steps('clusterConfig').availabilitySet]",
-      "availabilitySetName": "[steps('clusterConfig').availabilitySetName]",
-      "gwHostName": "[steps('clusterConfig').gwHostName]",
-      "lbHostName": "[steps('clusterConfig').lbHostName]",
-      "lbName": "[steps('clusterConfig').lbName]",
-      "vmNamePrefix": "[steps('clusterConfig').vmNamePrefix]",
+      "vmAdminName": "[basics('userName')]",
+      "vmAdminPassword": "[basics('admPassword')]",
+      "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
+      "vmSize": "[steps('dsmConfig').vmSize]",
+      "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
+      "dsmAdminName": "[steps('dsmConfig').dsmAdminName]",
+      "dsmAdminPassword": "[steps('dsmConfig').dsmAdminPassword]",
+      "createNewSQL": "[steps('dsmConfig').createNewSQL]",
+      "dbName": "[steps('dsmConfig').dbName]",
+      "dbAdminName": "[steps('dsmConfig').dbAdminName]",
+      "dbAdminPassword": "[steps('dsmConfig').dbAdminPassword]",
       "storageAcc": "[steps('advSettings').storageAcc.name]",
       "storageAccExists": "[steps('advSettings').storageAcc.newOrExisting]",
       "networkName": "[steps('advSettings').vnetwork.name]",
