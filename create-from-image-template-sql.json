@@ -4,7 +4,6 @@
     "parameters": {
       "vmName": {
         "type": "string",
-        "defaultValue": "DSM"
       },
         "dnsNameForPublicIP": {
             "type": "string",
@@ -16,7 +15,8 @@
             "type": "string",
             "metadata": {
                 "description": "UserName for the Virtual Machine"
-            }
+            },
+            "defaultValue": "admin",
         },
         "adminPassword": {
             "type": "securestring",
@@ -28,13 +28,15 @@
             "type": "string",
             "metadata": {
                 "description": "IP or DNS of Database Server"
-            }
+            },
+            "defaultValue": "dsm",
         },
         "databaseUserName": {
             "type": "string",
             "metadata": {
                 "description": "Database user name"
-            }
+            },
+            "defaultValue": "admin",
         },
         "databaseUserPassword": {
             "type": "securestring",
@@ -251,7 +253,7 @@
         "dependsOn": [
             "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
             "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
-            "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
+            "[resourceId('Microsoft.SQL/servers/databases', variables('serverName'),parameters('databaseName'))]"
         ],
         "properties": {
             "hardwareProfile": {
