@@ -178,7 +178,7 @@
             }
           },
           {
-            "name": "allow-inbound-dsmheartbeat",
+            "name": "allow-inbound-dsmagent",
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
