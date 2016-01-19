@@ -42,24 +42,14 @@
     ],
     "steps": [
       {
-        "name": "dsmConfig",
-        "label": "Trend Micro Deep Security Manager Settings",
+        "name": "dsmVMDBSize",
+        "label": "Trend Micro DSM - Grant Agent Seats and DB Size",
         "subLabel": {
-          "preValidation": "Configure DNS names, DSM settings",
+          "preValidation": "Configure Agent Seats and DB Size",
           "postValidation": "Done"
         },
-        "bladeTitle": "DSM settings",
+        "bladeTitle": "DSM settings - Grant Agent Seats and DB Size",
         "elements": [
-          {
-            "name": "publicIPAddressName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Public IP Address Name",
-            "constraints": {
-              "required": true,
-              "regex": "^[a-z][a-zA-Z0-9-]{0,14}[a-zA-Z0-9]$",
-              "validationMessage": "Only letters, numbers, and '-' are allowed, and the value must be 1-16 characters long and starts with a letter."
-            }
-          },
           {
             "name": "vmSize",
             "type": "Microsoft.Common.DropDown",
@@ -73,7 +63,7 @@
                 },
                 {
                   "label": "50",
-                  "value": "Standard_D3_v2"              
+                  "value": "Standard_D3_v2"
                 },
                 {
                   "label": "100",
@@ -87,49 +77,42 @@
             }
           },
           {
-            "name": "dsmAdminName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Deep Security Admin Name",
-            "constraints": {
-              "required": true,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
-              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
-            }
-          },
-          {
-            "name": "dsmAdminPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "Deep Security Admin Password",
-              "confirmPassword": "Confirm password"
-            },
-            "constraints": {
-              "required": true,
-              "regex": "",
-              "validationMessage": ""
-            },
-            "options": {
-              "hideConfirmation": false
-            }
-          },
-          {
-            "name": "createNewSQL",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Create a New Microsoft SQL",
-            "defaultValue": true,
+            "name": "dbSize",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Grant Agent Seats",
+            "defaultValue": "Standard-S0",
             "constraints": {
               "allowedValues": [
                 {
-                  "label": "Yes",
-                  "value": true
+                  "label": "Standard-S0 (10 DTUs, $15/MONTH)",
+                  "value": "Standard-S0"
                 },
                 {
-                  "label": "No",
-                  "value": false
+                  "label": "Standard-S1 (20 DTUs, $28/MONTH)",
+                  "value": "Standard-S1"
+                },
+                {
+                  "label": "Standard-S2 (50 DTUs, $70/MONTH)",
+                  "value": "Standard-S2"
+                },
+                {
+                  "label": "Standard-S3 (100 DTUs, $140/MONTH)",
+                  "value": "Standard-S3"
                 }
               ]
             }
-          },
+          }
+        ]
+      },
+      {
+        "name": "dsmDB",
+        "label": "Trend Micro DSM - Database",
+        "subLabel": {
+          "preValidation": "Configure Database Settings",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "DSM Database Settings",
+        "elements": [
           {
             "name": "dbName",
             "type": "Microsoft.Common.TextBox",
@@ -155,6 +138,43 @@
             "type": "Microsoft.Common.PasswordBox",
             "label": {
               "password": "Database Admin Password",
+              "confirmPassword": "Confirm password"
+            },
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "dsmCredential",
+        "label": "Trend Micro DSM - Credentials",
+        "subLabel": {
+          "preValidation": "Configure DSM Credentials",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "DSM Credentials",
+        "elements": [
+          {
+            "name": "dsmAdminName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Deep Security Admin Name",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dsmAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Deep Security Admin Password",
               "confirmPassword": "Confirm password"
             },
             "constraints": {
@@ -233,7 +253,6 @@
             }
           }
         ]
-
       }
     ],
     "outputs": {
@@ -243,7 +262,6 @@
       "vmAdminPassword": "[basics('admPassword')]",
       "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
       "vmSize": "[steps('dsmConfig').vmSize]",
-      "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
       "dsmAdminName": "[steps('dsmConfig').dsmAdminName]",
       "dsmAdminPassword": "[steps('dsmConfig').dsmAdminPassword]",
       "createNewSQL": "[steps('dsmConfig').createNewSQL]",
