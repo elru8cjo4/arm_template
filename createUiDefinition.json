@@ -60,7 +60,7 @@
             "name": "element1",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "VM Size Mapping To Grant Agent Seats\nStandard_D2_v2 - 25 seats\nStandard_D3_v2 - 50 seats;",
-            "toolTip": "Standard_D2_v2 - 25 seats; Standard_D3_v2 - 50 seats; ",
+            "toolTip": "Standard_D2_v2 - 25 seats; Standard_D3_v2 - 50 seats; Standard_D4_v2 - 100 seats; Standard_D5_v2 - 200 seats",
             "recommendedSizes": [
               "Standard_D2_v2",
               "Standard_D3_v2",
@@ -113,7 +113,7 @@
           {
             "name": "dbSize",
             "type": "Microsoft.Common.DropDown",
-            "label": "Grant Agent Seats",
+            "label": "MSSQL Database Size",
             "defaultValue": "Standard-S0",
             "constraints": {
               "allowedValues": [
