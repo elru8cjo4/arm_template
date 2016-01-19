@@ -119,8 +119,7 @@
           {
             "name": "dbName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Database Name",
-            "defaultValue": "dsm",
+            "label": "Database Name",            
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -130,8 +129,7 @@
           {
             "name": "dbAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Database Admin Name",
-            "defaultValue": "admin",
+            "label": "Database Admin Name",            
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -168,8 +166,7 @@
           {
             "name": "dsmAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Deep Security Admin Name",
-            "defaultValue": "admin",
+            "label": "Deep Security Admin Name",            
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
