@@ -233,7 +233,7 @@
             "label": "Storage account",
             "toolTip": "",
             "defaultValue": {
-              "name": "storage01",
+              "name": "dsmstorage01",
               "type": "Premium_LRS"
             }
           },
