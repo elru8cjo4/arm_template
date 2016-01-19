@@ -55,7 +55,7 @@
           "postValidation": "Done"
         },
         "bladeTitle": "DSM settings - VM Size, Grant Agent Seats and DB Size",
-        "bladeSubtitle": "VM Size and Grant Agent Seats Mapping:\nStandard_D2_v2 - 25 seats\nStandard_D3_v2 - 50 seats\nStandard_D4_v2 - 100 seats\nStandard_D5_v2 - 200 seats",
+        "bladeSubtitle": "VM Size and Grant Agent Seats Mapping: Standard_D2_v2 - 25 seats; Standard_D3_v2 - 50 seats; Standard_D4_v2 - 100 seats; Standard_D5_v2 - 200 seats",
         "elements": [
           {
             "name": "vmSize",
