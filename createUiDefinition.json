@@ -59,12 +59,13 @@
           {
             "name": "element1",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "VM Size Mapping To Grant Agent Seats",
-            "toolTip": "",
+            "label": "VM Size Mapping To Grant Agent Seats\nStandard_D2_v2 - 25 seats\nStandard_D3_v2 - 50 seats;",
+            "toolTip": "Standard_D2_v2 - 25 seats; Standard_D3_v2 - 50 seats; ",
             "recommendedSizes": [
-              "Standard_D1",
-              "Standard_D2",
-              "Standard_D3"
+              "Standard_D2_v2",
+              "Standard_D3_v2",
+              "Standard_D4_v2",
+              "Standard_D5_v2"
             ],
             "constraints": {
               "allowedSizes": [
