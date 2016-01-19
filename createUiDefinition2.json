@@ -9,7 +9,7 @@
         "label": "Name",
         "constraints": {
           "required": true,
-          "regex": "^[a-z0-9A-Z-]{1,10}$",
+          "regex": "^[a-z0-9A-Z]{1,10}$",
           "validationMessage": "Only letters and numbers are allowed, and the value must be 1-10 characters long."
         }
       },
@@ -64,7 +64,7 @@
             "name": "vmSize",
             "type": "Microsoft.Common.DropDown",
             "label": "Grant Agent Seats",
-            "defaultValue": "25",
+            "defaultValue": "Standard_D2_v2",
             "constraints": {
               "allowedValues": [
                 {
@@ -185,6 +185,10 @@
             "defaultValue": {
               "name": "storage01",
               "type": "Premium_LRS"
+            },
+            "constraints": {
+              "allowedTypes": [ ],
+              "excludedTypes": [ ]
             }
           },
           {
@@ -251,6 +255,7 @@
       "dbAdminName": "[steps('dsmConfig').dbAdminName]",
       "dbAdminPassword": "[steps('dsmConfig').dbAdminPassword]",
       "storageAcc": "[steps('advSettings').storageAcc.name]",
+      "storageAccExists": "[steps('advSettings').storageAcc.newOrExisting]",
       "networkName": "[steps('advSettings').vnetwork.name]",
       "networkExists": "[steps('advSettings').vnetwork.newOrExisting]",
       "networkAddress": "[steps('advSettings').vnetwork.addressPrefix]",
