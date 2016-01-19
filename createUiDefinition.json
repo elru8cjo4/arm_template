@@ -49,18 +49,19 @@
     "steps": [
       {
         "name": "dsmVMDBSize",
-        "label": "Trend Micro DSM - Grant Agent Seats and DB Size",
+        "label": "Trend Micro DSM - VM Size, Grant Agent Seats and DB Size",
         "subLabel": {
           "preValidation": "Configure Agent Seats and DB Size",
           "postValidation": "Done"
         },
-        "bladeTitle": "DSM settings - Grant Agent Seats and DB Size",
+        "bladeTitle": "DSM settings - VM Size, Grant Agent Seats and DB Size",
+        "bladeSubtitle": "VM Size and Grant Agent Seats Mapping:\nStandard_D2_v2 - 25 seats\nStandard_D3_v2 - 50 seats\nStandard_D4_v2 - 100 seats\nStandard_D5_v2 - 200 seats",
         "elements": [
           {
-            "name": "element1",
+            "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "VM Size Mapping To Grant Agent Seats\nStandard_D2_v2 - 25 seats\nStandard_D3_v2 - 50 seats;",
-            "toolTip": "Standard_D2_v2 - 25 seats; Standard_D3_v2 - 50 seats; Standard_D4_v2 - 100 seats; Standard_D5_v2 - 200 seats",
+            "label": "VM Size Mapping To Grant Agent Seats",
+            "toolTip": "",
             "recommendedSizes": [
               "Standard_D2_v2",
               "Standard_D3_v2",
@@ -83,38 +84,12 @@
               "sku": "2012-R2-Datacenter"
             },
             "count": 1
-          },
-          {
-            "name": "vmSize",
-            "type": "Microsoft.Common.DropDown",
-            "label": "Grant Agent Seats",
-            "defaultValue": "25",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "25",
-                  "value": "Standard_D2_v2"
-                },
-                {
-                  "label": "50",
-                  "value": "Standard_D3_v2"
-                },
-                {
-                  "label": "100",
-                  "value": "Standard_D4_v2"
-                },
-                {
-                  "label": "200",
-                  "value": "Standard_D5_v2"
-                }
-              ]
-            }
-          },
+          },          
           {
             "name": "dbSize",
             "type": "Microsoft.Common.DropDown",
             "label": "MSSQL Database Size",
-            "defaultValue": "Standard-S0",
+            "defaultValue": "Standard-S0 (10 DTUs, $15/MONTH)",
             "constraints": {
               "allowedValues": [
                 {
