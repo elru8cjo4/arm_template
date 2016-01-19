@@ -64,7 +64,8 @@
             "recommendedSizes": [
                 "Standard_D2_v2",
                 "Standard_D3_v2",
-                "Standard_D4_v2"
+                "Standard_D4_v2",
+                "Standard_D5_v2"
             ],
             "constraints": {
               "allowedSizes": [
@@ -172,7 +173,8 @@
           {
             "name": "dsmAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Deep Security Admin Name",            
+            "label": "Deep Security Admin Name",
+            "defaultValue": "admin",          
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
