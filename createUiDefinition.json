@@ -25,19 +25,25 @@
       },
       {
         "name": "admPassword",
-        "type": "Microsoft.Common.PasswordBox",
+        "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
+          "authenticationType": "Authentication type",
           "password": "Password",
-          "confirmPassword": "Confirm password"
+          "confirmPassword": "Confirm password",
+          "sshPublicKey": "SSH public key"
+        },
+        "toolTip": {
+          "authenticationType": "",
+          "password": "",
+          "sshPublicKey": ""
         },
         "constraints": {
-          "required": true,
-          "regex": "",
-          "validationMessage": ""
+          "required": true
         },
         "options": {
-          "hideConfirmation": true
-        }
+          "hideConfirmation": false
+        },
+        "osPlatform": "Linux"
       }
     ],
     "steps": [
@@ -50,6 +56,34 @@
         },
         "bladeTitle": "DSM settings - Grant Agent Seats and DB Size",
         "elements": [
+          {
+            "name": "element1",
+            "type": "Microsoft.Compute.SizeSelector",
+            "label": "Size",
+            "toolTip": "",
+            "recommendedSizes": [
+              "Standard_D1",
+              "Standard_D2",
+              "Standard_D3"
+            ],
+            "constraints": {
+              "allowedSizes": [
+                "Standard_D1",
+                "Standard_D2",
+                "Standard_D3",
+                "Standard_D4",
+                "Standard_D5"
+              ],
+              "excludedSizes": []
+            },
+            "osPlatform": "Linux",
+            "imageReference": {
+              "publisher": "MicrosoftWindowsServer",
+              "offer": "WindowsServer",
+              "sku": "2012-R2-Datacenter"
+            },
+            "count": 1
+          },
           {
             "name": "vmSize",
             "type": "Microsoft.Common.DropDown",
@@ -198,6 +232,26 @@
         "bladeTitle": "Settings",
         "elements": [
           {
+            "name": "publicIPAddressDomainName",
+            "type": "Microsoft.Network.PublicIpAddressCombo",
+            "label": {
+              "publicIpAddress": "Public IP address",
+              "domainNameLabel": "Domain name label"
+            },
+            "toolTip": {
+              "publicIpAddress": "",
+              "domainNameLabel": ""
+            },
+            "defaultValue": {
+              "publicIpAddressName": "[concat(basics('deploymentName'), '-publicip')]",
+              "domainNameLabel": "[basics('deploymentName')]"
+            },
+            "options": {
+              "hideNone": false,
+              "hideDomainNameLabel": false
+            }
+          },
+          {
             "name": "storageAcc",
             "type": "Microsoft.Storage.StorageAccountSelector",
             "label": "Storage account",
@@ -260,14 +314,13 @@
       "deploymentName": "[basics('deploymentName')]",
       "vmAdminName": "[basics('userName')]",
       "vmAdminPassword": "[basics('admPassword')]",
-      "publicIPAddressName": "[steps('dsmConfig').publicIPAddressName]",
-      "vmSize": "[steps('dsmConfig').vmSize]",
-      "dsmAdminName": "[steps('dsmConfig').dsmAdminName]",
-      "dsmAdminPassword": "[steps('dsmConfig').dsmAdminPassword]",
-      "createNewSQL": "[steps('dsmConfig').createNewSQL]",
-      "dbName": "[steps('dsmConfig').dbName]",
-      "dbAdminName": "[steps('dsmConfig').dbAdminName]",
-      "dbAdminPassword": "[steps('dsmConfig').dbAdminPassword]",
+      "vmSize": "[steps('dsmVMDBSize').vmSize]",
+      "dsmAdminName": "[steps('dsmCredential').dsmAdminName]",
+      "dsmAdminPassword": "[steps('dsmCredential').dsmAdminPassword]",      
+      "dbName": "[steps('dsmDB').dbName]",
+      "dbAdminName": "[steps('dsmDB').dbAdminName]",
+      "dbAdminPassword": "[steps('dsmDB').dbAdminPassword]",
+      "publicIPAddressDomainName": "[steps('advSettings').publicIPAddressDomainName]",
       "storageAcc": "[steps('advSettings').storageAcc.name]",
       "networkName": "[steps('advSettings').vnetwork.name]",
       "networkExists": "[steps('advSettings').vnetwork.newOrExisting]",
