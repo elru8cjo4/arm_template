@@ -131,12 +131,12 @@
             "name": "dbAdminName",
             "type": "Microsoft.Common.TextBox",
             "label": "Database Admin Name",
+            "defaultValue": "admin",
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
-            },
-            "defaultValue": "admin"
+            }
           },
           {
             "name": "dbAdminPassword",
@@ -169,12 +169,12 @@
             "name": "dsmAdminName",
             "type": "Microsoft.Common.TextBox",
             "label": "Deep Security Admin Name",
+            "defaultValue": "admin",
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
-            },
-            "defaultValue": "admin"
+            }
           },
           {
             "name": "dsmAdminPassword",
