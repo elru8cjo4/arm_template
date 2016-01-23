@@ -34,7 +34,7 @@
         },
         "toolTip": {
           "authenticationType": "",
-          "password": "",
+          "password": "the password",
           "sshPublicKey": ""
         },
         "constraints": {
