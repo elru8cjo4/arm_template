@@ -60,7 +60,7 @@
           {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "VM Size Mapping To Grant Agent Seats: D2_v2(25 seats), D3_v2(50 seats), D4_v2(100 seats), D5_v2(200 seats)",
+            "label": "VM Size",
             "toolTip": "VM Size and Agent Seats Mapping: D2_v2(25 seats), D3_v2(50 seats), D4_v2(100 seats), D5_v2(200 seats)",
             "recommendedSizes": [
                 "Standard_D2_v2",
@@ -83,28 +83,55 @@
               "sku": "2012-R2-Datacenter"
             },
             "count": 1
-          },          
+          },
+           {
+            "name": "vmSize2",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Grant Agent Seats",
+            "defaultValue": "25",
+            "toolTip": "Agent Seats and VM Size Mapping: 25 seats(D2_v2), 50 seats(D3_v2), 100 seats(D4_v2), 200 seats(D5_v2)",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "25",
+                  "value": "Standard_D2_v2"
+                },
+                {
+                  "label": "50",
+                  "value": "Standard_D3_v2"
+                },
+                {
+                  "label": "100",
+                  "value": "Standard_D4_v2"
+                },
+                {
+                  "label": "200",
+                  "value": "Standard_D5_v2"
+                }
+              ]
+            }
+          },
           {
             "name": "dbSize",
             "type": "Microsoft.Common.DropDown",
             "label": "MSSQL Database Size",
-            "defaultValue": "Standard-S0 (10 DTUs, $15/MONTH)",
+            "defaultValue": "Standard-S0",
             "constraints": {
               "allowedValues": [
                 {
-                  "label": "Standard-S0 (10 DTUs, $15/MONTH)",
+                  "label": "Standard-S0",
                   "value": "Standard-S0"
                 },
                 {
-                  "label": "Standard-S1 (20 DTUs, $28/MONTH)",
+                  "label": "Standard-S1",
                   "value": "Standard-S1"
                 },
                 {
-                  "label": "Standard-S2 (50 DTUs, $70/MONTH)",
+                  "label": "Standard-S2",
                   "value": "Standard-S2"
                 },
                 {
-                  "label": "Standard-S3 (100 DTUs, $140/MONTH)",
+                  "label": "Standard-S3",
                   "value": "Standard-S3"
                 }
               ]
