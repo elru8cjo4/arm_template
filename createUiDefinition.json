@@ -61,7 +61,7 @@
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "VM Size",
-            "toolTip": "VM Size and Agent Seats Mapping:<br/>- D2_v2(25 seats)<br/>- D3_v2(50 seats)<br/>- D4_v2(100 seats)<br/>- D5_v2(200 seats)",
+            "toolTip": "VM Size and Agent Seats Mapping:<br/>* Standard_D2_v2:  25 seats<br/>* Standard_D3_v2:  50 seats<br/>* Standard_D4_v2: 100 seats<br/>* Standard_D5_v2: 200 seats<br/>* Standard_D12_v2: Bring-Your-Own-License",
             "recommendedSizes": [
                 "Standard_D2_v2",
                 "Standard_D3_v2",
@@ -72,7 +72,8 @@
                 "Standard_D2_v2",
                 "Standard_D3_v2",
                 "Standard_D4_v2",
-                "Standard_D5_v2"
+                "Standard_D5_v2",
+                "Standard_D12_v2"
               ],
               "excludedSizes": []
             },
@@ -89,7 +90,7 @@
             "type": "Microsoft.Common.DropDown",
             "label": "Grant Agent Seats",
             "defaultValue": "25",
-            "toolTip": "Agent Seats and VM Size Mapping:<br/>- 25 seats: Standard_D2_v2<br/>- 50 seats: Standard_D3_v2<br/>- 100 seats: Standard_D4_v2<br/>- 200 seats: Standard_D5_v2",
+            "toolTip": "Agent Seats and VM Size Mapping:<br/>*  25 seats: Standard_D2_v2<br/>*  50 seats: Standard_D3_v2<br/>* 100 seats: Standard_D4_v2<br/>* 200 seats: Standard_D5_v2<br/>* Bring-Your-Own-License: Standard_D12_v2",
             "constraints": {
               "allowedValues": [
                 {
