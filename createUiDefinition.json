@@ -60,7 +60,7 @@
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "VM Size Mapping To Grant Agent Seats: D2_v2(25 seats), D3_v2(50 seats), D4_v2(100 seats), D5_v2(200 seats)",
-            "toolTip": "",
+            "toolTip": "VM Size and Agent Seats Mapping: D2_v2(25 seats), D3_v2(50 seats), D4_v2(100 seats), D5_v2(200 seats)",
             "recommendedSizes": [
                 "Standard_D2_v2",
                 "Standard_D3_v2",
