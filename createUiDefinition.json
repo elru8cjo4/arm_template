@@ -186,7 +186,7 @@
                         "value": "upgrade"
                     },
                     {
-                        "label": "Frsh Install",
+                        "label": "Fresh Install",
                         "value": "fresh"
                     }
                     ]
