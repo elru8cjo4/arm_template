@@ -161,7 +161,7 @@
           {
             "name": "existingDB",
             "type": "Microsoft.Common.Section",
-            "label": "Please input the database hostname and choose on manager node config if you choose existing database.",
+            "label": "Please input 'Database Hostname' and choose a 'Manager Node Config' if you choose <b>Existing Database</b>.",
             "elements": [
             {
                 "name": "dbHostName",
