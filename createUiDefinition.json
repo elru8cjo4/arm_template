@@ -85,38 +85,6 @@
             },
             "count": 1
           },
-           {
-            "name": "vmSize2",
-            "type": "Microsoft.Common.DropDown",
-            "label": "Grant Agent Seats",
-            "defaultValue": "25",
-            "toolTip": "Agent Seats and VM Size Mapping:<br/>*  25 seats: Standard_D2_v2<br/>*  50 seats: Standard_D3_v2<br/>* 100 seats: Standard_D4_v2<br/>* 200 seats: Standard_D5_v2<br/>* Bring-Your-Own-License: Standard_D12_v2",
-            "constraints": {
-              "required": true,
-              "allowedValues": [
-                {
-                  "label": "25",
-                  "value": "Standard_D2_v2"
-                },
-                {
-                  "label": "50",
-                  "value": "Standard_D3_v2"
-                },
-                {
-                  "label": "100",
-                  "value": "Standard_D4_v2"
-                },
-                {
-                  "label": "200",
-                  "value": "Standard_D5_v2"
-                },
-                {
-                  "label": "Bring-Your-Own-License",
-                  "value": "Standard_D12_v2"
-                }
-              ]
-            }
-          },
           {
             "name": "dbSize",
             "type": "Microsoft.Common.DropDown",
