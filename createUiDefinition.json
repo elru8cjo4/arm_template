@@ -50,7 +50,7 @@
     ],
     "steps": [
       {
-        "name": "dsmVMDBSize",
+        "name": "dsmVMSizeAndPortal",
         "label": "Trend Micro DSM - VM Size, Grant Agent Seats, Address and Ports.",
         "subLabel": {
           "preValidation": "Configure agent seats, manager address and ports",
@@ -164,7 +164,7 @@
             "label": "Please input 'Database Hostname' and choose a 'Manager Node Config' if you choose 'Existing Database'.",
             "elements": [
             {
-                "name": "dbHostName",
+                "name": "dbHostname",
                 "type": "Microsoft.Common.TextBox",
                 "label": "Database Hostname",
                 "toolTip": "Your currently running Microsoft SQL Server hostname"
@@ -364,9 +364,15 @@
       "deploymentName": "[basics('deploymentName')]",
       "vmAdminName": "[basics('userName')]",
       "vmAdminPassword": "[basics('admPassword')]",
-      "vmSize": "[steps('dsmVMDBSize').vmSize]",
+      "vmSize": "[steps('dsmVMSizeAndPortal').vmSize]",
+      "managerPort": "[steps('dsmVMSizeAndPortal').managerPort]",
+      "heartbeatPort": "[steps('dsmVMSizeAndPortal').heartbeatPort]",
+      "managerAddress": "[steps('dsmVMSizeAndPortal').managerAddress]",
       "dsmAdminName": "[steps('dsmCredential').dsmAdminName]",
-      "dsmAdminPassword": "[steps('dsmCredential').dsmAdminPassword]",      
+      "dsmAdminPassword": "[steps('dsmCredential').dsmAdminPassword]",
+      "dbSize": "[steps('dsmDB').dbSize]",
+      "dbHostname": "[steps('dsmDB').existingDB.dbHostname]",
+      "dbNode": "[steps('dsmDB').existingDB.dbNode]",
       "dbName": "[steps('dsmDB').dbName]",
       "dbAdminName": "[steps('dsmDB').dbAdminName]",
       "dbAdminPassword": "[steps('dsmDB').dbAdminPassword]",
