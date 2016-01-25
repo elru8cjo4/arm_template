@@ -118,6 +118,88 @@
         ]
       },
       {
+        "name": "dsmDB1",
+        "label": "Trend Micro DSM - New Database",
+        "subLabel": {
+          "preValidation": "Configure Database Settings",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "DSM Database Settings for New Database",
+         "elements": [
+          {
+            "name": "newDBdescription",
+            "type": "Microsoft.Common.Section",
+            "label": "If you want to have a new MSSQL server for the DSM, please fill in this page, and we'll create a MSSQL server for you."
+          },
+          {
+            "name": "dbSize",
+            "type": "Microsoft.Common.DropDown",
+            "label": "New MSSQL Database Size",
+            "defaultValue": "Standard-S0",
+            "toolTip": "Choose 'Existing Database' to use your already created DB.",
+            "constraints": {
+              "required": true,
+              "allowedValues": [
+                {
+                  "label": "Standard-S0",
+                  "value": "Standard-S0"
+                },
+                {
+                  "label": "Standard-S1",
+                  "value": "Standard-S1"
+                },
+                {
+                  "label": "Standard-S2",
+                  "value": "Standard-S2"
+                },
+                {
+                  "label": "Standard-S3",
+                  "value": "Standard-S3"
+                }
+              ]
+            }
+          },
+          {
+            "name": "dbName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Name", 
+            "defaultValue": "dsm",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dbAdminName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Admin Name",
+            "defaultValue": "dbadmin",
+            "constraints": {
+              "required": true,
+              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dbAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Database Admin Password",
+              "confirmPassword": "Confirm password"
+            },
+            "constraints": {
+              "required": true,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": false
+            }
+          }
+        ]       
+      },
+      {
         "name": "dsmDB",
         "label": "Trend Micro DSM - Database",
         "subLabel": {
