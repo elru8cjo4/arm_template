@@ -28,8 +28,8 @@ managerAddress=`curl http://ifconfig.co/?cmd=curl`
 sed -i -e "s/%managerAddress%/$managerAddress/g" dsminstall.prop
 cp dsminstall.prop /tmp/dsminstall.prop
 
-sleep 10
-echo "After sleep 10 seconds!\n"
+sleep 5
+#echo "After sleep 10 seconds!\n"
 r=0
 times=0
 while [ $r -eq 0 ] && [ $times -lt 3 ]; do
