@@ -129,16 +129,37 @@
           {
             "name": "newDBdescription",
             "type": "Microsoft.Common.Section",
-            "label": "If you want to have a new MSSQL server for the DSM, please fill in this page, and we'll create a MSSQL server for you."
+            "label": "If you want to have a new MSSQL server for the DSM, please choose 'Enable' to 'Yes' , and fill in this page. We'll create a MSSQL server for you.",
+            "elements": [
+              {
+                "name": "enableNewDB",
+                "type": "Microsoft.Common.OptionsGroup",
+                "label": "Enalbe",
+                "defaultValue": "No",
+                "toolTip": "",
+                "constraints": {
+                    "allowedValues": [
+                    {
+                        "label": "Yes",
+                        "value": "yes"
+                    },
+                    {
+                        "label": "No",
+                        "value": "no"
+                    }
+                    ]
+                }
+              }
+            ]
           },
           {
             "name": "dbSize",
             "type": "Microsoft.Common.DropDown",
-            "label": "New MSSQL Database Size",
-            "defaultValue": "Standard-S0",
-            "toolTip": "Choose 'Existing Database' to use your already created DB.",
+            "label": "MSSQL Database Size",
+            "defaultValue": "",
+            "toolTip": "Choose database size",
             "constraints": {
-              "required": true,
+              "required": false,
               "allowedValues": [
                 {
                   "label": "Standard-S0",
@@ -165,7 +186,7 @@
             "label": "Database Name", 
             "defaultValue": "dsm",
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
@@ -176,7 +197,7 @@
             "label": "Database Admin Name",
             "defaultValue": "dbadmin",
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
@@ -189,7 +210,7 @@
               "confirmPassword": "Confirm password"
             },
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "",
               "validationMessage": ""
             },
@@ -201,80 +222,67 @@
       },
       {
         "name": "dsmDB",
-        "label": "Trend Micro DSM - Database",
+        "label": "Trend Micro DSM - Existing Database",
         "subLabel": {
           "preValidation": "Configure Database Settings",
           "postValidation": "Done"
         },
-        "bladeTitle": "DSM Database Settings",
+        "bladeTitle": "DSM Database Settings for Existing Database",
         "elements": [
           {
-            "name": "dbSize",
-            "type": "Microsoft.Common.DropDown",
-            "label": "New MSSQL Database Size",
-            "defaultValue": "Standard-S0",
-            "toolTip": "Choose 'Existing Database' to use your already created DB.",
-            "constraints": {
-              "required": true,
-              "allowedValues": [
-                {
-                  "label": "Standard-S0",
-                  "value": "Standard-S0"
-                },
-                {
-                  "label": "Standard-S1",
-                  "value": "Standard-S1"
-                },
-                {
-                  "label": "Standard-S2",
-                  "value": "Standard-S2"
-                },
-                {
-                  "label": "Standard-S3",
-                  "value": "Standard-S3"
-                },
-                {
-                  "label": "Existing Database",
-                  "value": "none"
-                }
-              ]
-            }
-          },
-          {
-            "name": "existingDB",
+            "name": "existingDBdescription",
             "type": "Microsoft.Common.Section",
-            "label": "Please input 'Database Hostname' and choose a 'Manager Node Config' if you choose 'Existing Database'.",
+            "label": "If you want to use your created MSSQL server for the DSM, please choose 'Enable' to 'Yes' , and fill in this page.",
             "elements": [
-            {
-                "name": "dbHostname",
-                "type": "Microsoft.Common.TextBox",
-                "label": "Database Hostname",
-                "toolTip": "Your currently running Microsoft SQL Server hostname"
-            },
-            {
-                "name": "dbNode",
+              {
+                "name": "enableExistDB",
                 "type": "Microsoft.Common.OptionsGroup",
-                "label": "Manager Node Config",
-                "defaultValue": "New Node",
-                "toolTip": "<b>New Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
+                "label": "Enalbe",
+                "defaultValue": "No",
+                "toolTip": "",
                 "constraints": {
                     "allowedValues": [
                     {
-                        "label": "New Node",
-                        "value": "new"
+                        "label": "Yes",
+                        "value": "yes"
                     },
                     {
-                        "label": "Upgrade",
-                        "value": "upgrade"
-                    },
-                    {
-                        "label": "Fresh Install",
-                        "value": "fresh"
+                        "label": "No",
+                        "value": "no"
                     }
                     ]
                 }
-            }
+              }
             ]
+          },
+          {
+            "name": "dbHostname",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Hostname",
+            "toolTip": "Your currently running Microsoft SQL Server hostname"
+          },
+          {
+              "name": "dbNode",
+              "type": "Microsoft.Common.OptionsGroup",
+              "label": "Manager Node Config",
+              "defaultValue": "New Node",
+              "toolTip": "<b>New Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
+              "constraints": {
+                  "allowedValues": [
+                  {
+                      "label": "New Node",
+                      "value": "new"
+                  },
+                  {
+                      "label": "Upgrade",
+                      "value": "upgrade"
+                  },
+                  {
+                      "label": "Fresh Install",
+                      "value": "fresh"
+                  }
+                  ]
+              }
           },
           {
             "name": "dbName",
@@ -282,7 +290,7 @@
             "label": "Database Name", 
             "defaultValue": "dsm",           
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
@@ -293,7 +301,7 @@
             "label": "Database Admin Name",
             "defaultValue": "dbadmin",
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
@@ -306,7 +314,7 @@
               "confirmPassword": "Confirm password"
             },
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "",
               "validationMessage": ""
             },
