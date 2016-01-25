@@ -6,7 +6,7 @@
       {
         "name": "deploymentName",
         "type": "Microsoft.Common.TextBox",
-        "label": "Name",
+        "label": "VM Name",
         "toolTip": "VM name",
         "constraints": {
           "required": true,
@@ -29,7 +29,7 @@
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
           "authenticationType": "Authentication type",
-          "password": "Password",
+          "password": "User Password",
           "confirmPassword": "Confirm password",
           "sshPublicKey": "SSH public key"
         },
@@ -50,12 +50,12 @@
     "steps": [
       {
         "name": "dsmVMDBSize",
-        "label": "Trend Micro DSM - VM Size, Grant Agent Seats and DB Size",
+        "label": "Trend Micro DSM - VM Size, Grant Agent Seats, Address and Ports.",
         "subLabel": {
-          "preValidation": "Configure Agent Seats and DB Size",
+          "preValidation": "Configure agent seats, manager address and ports",
           "postValidation": "Done"
         },
-        "bladeTitle": "DSM settings - VM Size, Grant Agent Seats and DB Size",        
+        "bladeTitle": "DSM settings - VM Size, Grant Agent Seats, Managre Address and Ports",
         "elements": [
           {
             "name": "vmSize",
@@ -86,12 +86,56 @@
             "count": 1
           },
           {
+            "name": "managerPort",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Manager Port",
+            "defaultValue": "443",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "heartbeatPort",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Heartbeat Port",
+            "toolTip": "",
+            "defaultValue": "4120",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "managerAddress",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Manager Address",
+            "toolTip": "You can leave it blank to use ip as the manager address.",
+            "defaultValue": "",       
+            "constraints": {
+              "required": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "dsmDB",
+        "label": "Trend Micro DSM - Database",
+        "subLabel": {
+          "preValidation": "Configure Database Settings",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "DSM Database Settings",
+        "elements": [
+          {
             "name": "dbSize",
             "type": "Microsoft.Common.DropDown",
-            "label": "MSSQL Database Size",
+            "label": "New MSSQL Database Size",
             "defaultValue": "Standard-S0",
             "constraints": {
               "allowedValues": [
+                {
+                  "label": "Existing Database",
+                  "value": "none"
+                },
                 {
                   "label": "Standard-S0",
                   "value": "Standard-S0"
@@ -110,18 +154,7 @@
                 }
               ]
             }
-          }
-        ]
-      },
-      {
-        "name": "dsmDB",
-        "label": "Trend Micro DSM - Database",
-        "subLabel": {
-          "preValidation": "Configure Database Settings",
-          "postValidation": "Done"
-        },
-        "bladeTitle": "DSM Database Settings",
-        "elements": [
+          },
           {
             "name": "dbName",
             "type": "Microsoft.Common.TextBox",
