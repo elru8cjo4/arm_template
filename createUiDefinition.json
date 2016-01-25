@@ -133,6 +133,7 @@
             "defaultValue": "Standard-S0",
             "toolTip": "Choose 'Existing Database' to use your already created DB.",
             "constraints": {
+              "required": true,
               "allowedValues": [
                 {
                   "label": "Standard-S0",
@@ -158,9 +159,9 @@
             }
           },
           {
-            "name": "Configuration Only for Existing Database",
+            "name": "existingDB",
             "type": "Microsoft.Common.Section",
-            "label": "Some section",
+            "label": "Please input the database hostname and choose on manager node config if you choose existing database.",
             "elements": [
             {
                 "name": "dbHostName",
@@ -173,7 +174,7 @@
                 "type": "Microsoft.Common.OptionsGroup",
                 "label": "Manager Node Config",
                 "defaultValue": "New Manager Node",
-                "toolTip": "<b>New Manager Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
+                "toolTip": "<b>New Manager Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
                 "constraints": {
                     "allowedValues": [
                     {
@@ -192,29 +193,6 @@
                 }
             }
             ]
-          },
-          {
-            "name": "dbNode",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Manager Node Config",
-            "defaultValue": "New Manager Node",
-            "toolTip": "<b>New Manager Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
-            "constraints": {
-              "allowedValues": [
-                {
-                  "label": "New Manager Node",
-                  "value": "new"
-                },
-                {
-                  "label": "Upgrade",
-                  "value": "upgrade"
-                },
-                {
-                  "label": "Frsh Install",
-                  "value": "fresh"
-                }
-              ]
-            }
           },
           {
             "name": "dbName",
