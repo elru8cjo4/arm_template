@@ -116,6 +116,34 @@
             }
           },
           {
+            "name": "nodeConfig",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Manager Node Config",
+            "defaultValue": "New Node",
+            "toolTip": "<strong>New Node:</strong> Install with a new database or augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Second Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
+            "constraints": {
+                "required": true,
+                  "allowedValues": [
+                  {
+                      "label": "New Node",
+                      "value": "new"
+                  },
+                  {
+                      "label": "Second Node",
+                      "value": "second"
+                  },
+                  {
+                      "label": "Upgrade",
+                      "value": "upgrade"
+                  },
+                  {
+                      "label": "Fresh Install",
+                      "value": "fresh"
+                  }
+                  ]
+              }
+          },
+          {
               "name": "dbNode",
               "type": "Microsoft.Common.OptionsGroup",
               "label": "Manager Node Config",
@@ -225,7 +253,7 @@
             "defaultValue": "dbadmin",
             "constraints": {
               "required": false,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
           },
@@ -306,7 +334,7 @@
             "defaultValue": "",
             "constraints": {
               "required": false,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
           },
