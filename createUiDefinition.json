@@ -463,18 +463,6 @@
                   "minAddressCount": 12,
                   "requireContiguousAddresses": true
                 }
-              },
-              "VPNsubnet": {
-                "label": "VPN Clients subnet",
-                "defaultValue": {
-                  "name": "vpnsubnet",
-                  "addressPrefixSize": "/26"
-                },
-                "constraints": {
-                  "minAddressPrefixSize": "/26",
-                  "minAddressCount": 8,
-                  "requireContiguousAddresses": true
-                }
               }
             }
           }
