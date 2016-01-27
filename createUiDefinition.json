@@ -162,7 +162,7 @@
               {
                 "name": "enableNewDB",
                 "type": "Microsoft.Common.OptionsGroup",
-                "label": "Enalbe",
+                "label": "Enable",
                 "defaultValue": "No",
                 "toolTip": "",
                 "constraints": {
