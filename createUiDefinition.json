@@ -214,7 +214,7 @@
             "defaultValue": "dsm",
             "constraints": {
               "required": false,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
           },
@@ -295,7 +295,7 @@
             "defaultValue": "",
             "constraints": {
               "required": false,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
           },
