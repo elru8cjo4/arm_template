@@ -120,7 +120,7 @@
             "type": "Microsoft.Common.DropDown",
             "label": "Manager Node Config",
             "defaultValue": "New Node with Empty Database",
-            "toolTip": "<strong>New Node:</strong> Install with a new database or augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Second Node:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
+            "toolTip": "<strong>New Node with Empty Database:</strong> Install with a pure uninstalled database.<br/><br/><b>New Node with Existing Installation:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
             "constraints": {
                 "required": true,
                   "allowedValues": [
@@ -129,7 +129,7 @@
                       "value": "new"
                   },
                   {
-                      "label": "New Node with Existing Installation ",
+                      "label": "New Node with Existing Installation",
                       "value": "second"
                   },
                   {
