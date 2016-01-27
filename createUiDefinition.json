@@ -260,7 +260,7 @@
           {
             "name": "existingDBdescription",
             "type": "Microsoft.Common.Section",
-            "label": "If you want to use your created MSSQL server for the DSM, please fill this page."
+            "label": "If you want to use your created MSSQL server for the DSM, please fill in this page."
           },
           {
             "name": "dbHostname",
