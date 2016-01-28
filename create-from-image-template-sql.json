@@ -2,142 +2,87 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "location": {
-          "value": "eastus"
-      },
       "deploymentName": {
-          "value": "carol-dsm"
+          "defaultValue": "carol-dsm"
       },
       "vmAdminName": {
-          "value": "carol"
+          "defaultValue": "carol"
       },
       "vmAuthType": {
-          "value": "password"
+          "defaultValue": "password"
       },
       "vmAdminPassword": {
-          "value": "P2ssw0rd"
+          "defaultValue": "P2ssw0rd"
       },
       "vmSize": {
-          "value": "Standard_D2_v2"
+          "defaultValue": "Standard_D2_v2"
       },
       "managerPort": {
-          "value": "443"
+          "defaultValue": "443"
       },
       "heartbeatPort": {
-          "value": "4120"
+          "defaultValue": "4120"
       },
       "nodeConfig": {
-          "value": "new"
+          "defaultValue": "new"
       },
       "dsmAdminName": {
-          "value": "admin"
+          "defaultValue": "admin"
       },
       "dsmAdminPassword": {
-          "value": "P2ssw0rd"
+          "defaultValue": "P2ssw0rd"
       },
       "new_dbSize": {
-          "value": "Standard-S0"
+          "defaultValue": "Standard-S0"
       },
       "new_dbName": {
-          "value": "dsm"
+          "defaultValue": "dsm"
       },
       "new_dbAdminName": {
-          "value": "dbadmin"
+          "defaultValue": "dbadmin"
       },
       "new_dbAdminPassword": {
-          "value": "P2ssw0rd"
+          "defaultValue": "P2ssw0rd"
       },
-      "publicIPAddressDomainName": {
-          "value": "{\"name\":\"carol-dsm\",\"resourceGroup\":\"carol-dsm\",\"domainNameLabel\":\"carol-dsm\",\"newOrExistingOrNone\":\"new\"}"
+      "publicIPAddressName": {
+           "defaultValue": "carol-dsm"
+      },
+      "publicIPDomainNameLabel": {
+           "defaultValue": "carol-dsm"
       },
       "storageAcc": {
-          "value": "dsmstorage01"
+          "defaultValue": "dsmstorage01"
       },
       "networkName": {
-          "value": "vnet01"
+          "defaultValue": "vnet01"
       },
       "networkExists": {
-          "value": "new"
+          "defaultValue": "new"
       },
       "networkAddress": {
-          "value": "10.7.0.0/16"
+          "defaultValue": "10.7.0.0/16"
       },
       "subnetVMName": {
-          "value": "vmsubnet"
+          "defaultValue": "vmsubnet"
       },
       "subnetVMNaddress": {
-          "value": "10.7.0.0/24"
-      },
-      "vmName": {
-        "type": "string"
-      },
-        "dnsNameForPublicIP": {
-            "type": "string",
-            "metadata": {
-                "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
-            }
-        },
-        "adminUserName": {
-            "type": "string",
-            "metadata": {
-                "description": "UserName for the Virtual Machine"
-            },
-            "defaultValue": "admin"
-        },
-        "adminPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Password for the Virtual Machine"
-            }
-        },
-        "databaseName": {
-            "type": "string",
-            "metadata": {
-                "description": "IP or DNS of Database Server"
-            },
-            "defaultValue": "dsm"
-        },
-        "databaseUserName": {
-            "type": "string",
-            "metadata": {
-                "description": "Database user name"
-            },
-            "defaultValue": "admin"
-        },
-        "databaseUserPassword": {
-            "type": "securestring",
-            "metadata": {
-                "description": "Database user password"
-            }
-        },
-        "vmSize": {
-            "type": "string",
-            "metadata": {
-                "description": "This is the size of your VM"
-            },
-            "defaultValue": "Standard_D2",
-            "allowedValues": [
-                "Standard_D2",
-                "Standard_D3",
-                "Standard_D4"
-            ]
-        }
+          "defaultValue": "10.7.0.0/24"
+      }
     },
     "variables": {
         "location": "[resourceGroup().location]",
-        "publicIPAddressName": "[concat(parameters('vmName'),'pubip')]",
-        "vmName": "[parameters('vmName')]",
-        "virtualNetworkName": "[concat(parameters('vmName'),'vnet')]",
-        "nicName": "[concat(parameters('vmName'),'nic')]",
-        "addressPrefix": "10.0.0.0/16",
-        "subnet1Name": "[concat(parameters('vmName'),'sb1')]",
-        "subnet1Prefix": "10.0.0.0/24",
+        "vmName": "[parameters('deploymentName')]",
+        "virtualNetworkName": "[parameters('networkName')]",
+        "nicName": "[concat(parameters('deploymentName'),'nic')]",
+        "addressPrefix": "[parameters('networkAddress')]",
+        "subnet1Name": "[parameters('subnetVMName')]",
+        "subnet1Prefix": "[parameters('subnetVMNaddress')]",
         "publicIPAddressType": "Static",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-        "storageAccountName": "[concat(replace(parameters('vmName'),'-',''),'srg')]",
+        "storageAccountName": "[parameters('storageAcc')]",
         "storageAccountType": "Standard_LRS",
-        "serverName": "[concat(parameters('vmName'),'-sql')]",
+        "serverName": "[concat(parameters('deploymentName'),'-sql')]",
         "databaseServer": "[concat(variables('serverName'),'.database.windows.net')]"
     },
     "resources": [
@@ -156,13 +101,13 @@
         "location": "[variables('location')]",
         "apiVersion": "2014-04-01-preview",
         "properties": {
-            "administratorLogin": "[parameters('databaseUserName')]",
-            "administratorLoginPassword": "[parameters('databaseUserPassword')]",
+            "administratorLogin": "[parameters('new_dbAdminName')]",
+            "administratorLoginPassword": "[parameters('new_dbAdminPassword')]",
             "version": "12.0"
         },
         "resources": [
         {
-            "name": "[parameters('databaseName')]",
+            "name": "[parameters('new_dbName')]",
             "type": "databases",
             "location": "[variables('location')]",
             "apiVersion": "2014-04-01-preview",
@@ -199,7 +144,7 @@
         "properties": {
             "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
             "dnsSettings": {
-                "domainNameLabel": "[toLower(replace(parameters('dnsNameForPublicIP'),'-',''))]"
+                "domainNameLabel": "[parameters('publicIPDomainNameLabel')]"
             }
         }
     }, {
@@ -319,7 +264,7 @@
         "dependsOn": [
             "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
             "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
-            "[resourceId('Microsoft.SQL/servers/databases', variables('serverName'),parameters('databaseName'))]"
+            "[resourceId('Microsoft.SQL/servers/databases', variables('serverName'),parameters('new_dbName'))]"
         ],
         "properties": {
             "hardwareProfile": {
@@ -358,11 +303,11 @@
         }
     }, {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(parameters('vmName'),'/echoParams')]",
+        "name": "[concat(variables('vmName'),'/echoParams')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
         "dependsOn": [
-            "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+            "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
         ],
         "properties": {
             "publisher": "Microsoft.OSTCExtensions",
@@ -374,13 +319,13 @@
                     "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/dsminstall.prop"
                 ],
                 "commandToExecute": "sh echoParams.sh",
-                "vmName": "[parameters('vmName')]",
-                "adminUserName": "[parameters('adminUserName')]",
-                "adminPassword": "[parameters('adminPassword')]",
+                "vmName": "[variables('vmName')]",
+                "adminUserName": "[parameters('dsmAdminName')]",
+                "adminPassword": "[parameters('dsmAdminPassword')]",
                 "databaseServer": "[variables('databaseServer')]",
-                "databaseName": "[parameters('databaseName')]",
-                "databaseUserName": "[parameters('databaseUserName')]",
-                "databaseUserPassword": "[parameters('databaseUserPassword')]",
+                "databaseName": "[parameters('new_dbName')]",
+                "databaseUserName": "[parameters('new_dbAdminName')]",
+                "databaseUserPassword": "[parameters('new_dbAdminPassword')]",
                 "refDatabaseServer": "[reference(concat('Microsoft.Sql/servers/', variables('serverName'))).fullyQualifiedDomainName]",
                 "subscriptionId": "[subscription().subscriptionId]"
             }
