@@ -59,6 +59,21 @@
         "bladeTitle": "DSM settings - VM Size, Grant Agent Seats, Managre Address and Ports",
         "elements": [
           {
+            "name": "managerVersion",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Manager Version",
+            "defaultValue": "10.0",
+            "constraints": {
+                "required": true,
+                "allowedValues": [
+                  {
+                      "label": "10.0",
+                      "value": "10.0"
+                  }
+                ] 
+            }
+          },
+          {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
             "label": "VM Size (Agent Seats)",
