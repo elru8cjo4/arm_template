@@ -173,7 +173,7 @@
             "name": "dbHostname",
             "type": "Microsoft.Common.TextBox",
             "label": "Database Hostname",
-            "toolTip": "Your currently running Microsoft SQL Server hostname"
+            "toolTip": "It's required if you want to use an existing database."
           },
           {
             "name": "dbName",
