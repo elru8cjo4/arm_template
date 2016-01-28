@@ -3,69 +3,91 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "deploymentName": {
+        "type": "string",
           "defaultValue": "carol-dsm"
       },
       "vmAdminName": {
+        "type": "string",
           "defaultValue": "carol"
       },
       "vmAuthType": {
+        "type": "string",
           "defaultValue": "password"
       },
       "vmAdminPassword": {
+        "type": "string",
           "defaultValue": "P2ssw0rd"
       },
       "vmSize": {
+        "type": "string",
           "defaultValue": "Standard_D2_v2"
       },
       "managerPort": {
+        "type": "string",
           "defaultValue": "443"
       },
       "heartbeatPort": {
+        "type": "string",
           "defaultValue": "4120"
       },
       "nodeConfig": {
+        "type": "string",
           "defaultValue": "new"
       },
       "dsmAdminName": {
+        "type": "string",
           "defaultValue": "admin"
       },
       "dsmAdminPassword": {
+        "type": "string",
           "defaultValue": "P2ssw0rd"
       },
       "new_dbSize": {
+        "type": "string",
           "defaultValue": "Standard-S0"
       },
       "new_dbName": {
+        "type": "string",
           "defaultValue": "dsm"
       },
       "new_dbAdminName": {
+        "type": "string",
           "defaultValue": "dbadmin"
       },
       "new_dbAdminPassword": {
+        "type": "string",
           "defaultValue": "P2ssw0rd"
       },
       "publicIPAddressName": {
+        "type": "string",
            "defaultValue": "carol-dsm"
       },
       "publicIPDomainNameLabel": {
+        "type": "string",
            "defaultValue": "carol-dsm"
       },
       "storageAcc": {
+        "type": "string",
           "defaultValue": "dsmstorage01"
       },
       "networkName": {
+        "type": "string",
           "defaultValue": "vnet01"
       },
       "networkExists": {
+        "type": "string",
           "defaultValue": "new"
       },
       "networkAddress": {
+        "type": "string",
           "defaultValue": "10.7.0.0/16"
       },
       "subnetVMName": {
+        "type": "string",
           "defaultValue": "vmsubnet"
       },
       "subnetVMNaddress": {
+        "type": "string",
           "defaultValue": "10.7.0.0/24"
       }
     },
