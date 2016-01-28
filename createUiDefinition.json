@@ -287,7 +287,7 @@
             "label": "Storage account",
             "toolTip": "",
             "defaultValue": {
-              "name": "dsmstorage01",
+              "name": "dsmstorage001",
               "type": "Premium_LRS"
             }
           },
@@ -341,14 +341,11 @@
       "nodeConfig": "[steps('dsmVMSizeAndPortal').nodeConfig]",
       "dsmAdminName": "[steps('dsmCredential').dsmAdminName]",
       "dsmAdminPassword": "[steps('dsmCredential').dsmAdminPassword]",
-      "new_dbSize": "[steps('newDSMDB').dbSize]",
-      "new_dbName": "[steps('newDSMDB').dbName]",
-      "new_dbAdminName": "[steps('newDSMDB').dbAdminName]",
-      "new_dbAdminPassword": "[steps('newDSMDB').dbAdminPassword]",
-      "exist_dbHostname": "[steps('existDSMDB').dbHostname]",
-      "exist_dbName": "[steps('existDSMDB').dbName]",
-      "exist_dbAdminName": "[steps('existDSMDB').dbAdminName]",
-      "exist_dbAdminPassword": "[steps('existDSMDB').dbAdminPassword]",
+      "dbName": "[steps('dbSettings').dbName]",
+      "dbAdminName": "[steps('dbSettings').dbAdminName]",
+      "dbAdminPassword": "[steps('dbSettings').dbAdminPassword]",
+      "dbHostname": "[steps('dbSettings').dbHostname]",
+      "dbChoice": "[steps('dbSettings').createOrExisting]",
       "publicIPAddressDomainName": "[steps('advSettings').publicIPAddressDomainName]",
       "storageAcc": "[steps('advSettings').storageAcc.name]",
       "networkName": "[steps('advSettings').vnetwork.name]",
