@@ -6,7 +6,8 @@
       {
         "name": "deploymentName",
         "type": "Microsoft.Common.TextBox",
-        "label": "Name",
+        "label": "VM Name",
+        "toolTip": "VM name",
         "constraints": {
           "required": true,
           "regex": "^[a-z0-9A-Z-]{1,10}$",
@@ -17,6 +18,7 @@
         "name": "userName",
         "type": "Microsoft.Common.TextBox",
         "label": "User Name",
+        "toolTip": "User Name",
         "constraints": {
           "required": true,
           "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -28,13 +30,13 @@
         "type": "Microsoft.Compute.CredentialsCombo",
         "label": {
           "authenticationType": "Authentication type",
-          "password": "Password",
+          "password": "User Password",
           "confirmPassword": "Confirm password",
           "sshPublicKey": "SSH public key"
         },
         "toolTip": {
           "authenticationType": "",
-          "password": "",
+          "password": "the password",
           "sshPublicKey": ""
         },
         "constraints": {
@@ -48,26 +50,31 @@
     ],
     "steps": [
       {
-        "name": "dsmVMDBSize",
-        "label": "Trend Micro DSM - VM Size, Grant Agent Seats and DB Size",
+        "name": "dsmVMSizeAndPortal",
+        "label": "Trend Micro DSM - VM Size, Grant Agent Seats, Address and Ports.",
         "subLabel": {
-          "preValidation": "Configure Agent Seats and DB Size",
+          "preValidation": "Configure agent seats, manager address and ports",
           "postValidation": "Done"
         },
-        "bladeTitle": "DSM settings - VM Size, Grant Agent Seats and DB Size",        
+        "bladeTitle": "DSM settings - VM Size, Grant Agent Seats, Managre Address and Ports",
         "elements": [
           {
             "name": "vmSize",
             "type": "Microsoft.Compute.SizeSelector",
-            "label": "VM Size Mapping To Grant Agent Seats: D2_v2(25 seats), D3_v2(50 seats), D4_v2(100 seats), D5_v2(200 seats)",
-            "toolTip": "",
-            "recommendedSizes": [],
+            "label": "VM Size (Agent Seats)",
+            "toolTip": "VM Size and Agent Seats Mapping:<br/>* Standard_D2_v2:  25 seats<br/>* Standard_D3_v2:  50 seats<br/>* Standard_D4_v2: 100 seats<br/>* Standard_D5_v2: 200 seats<br/>* Standard_D12_v2: Bring-Your-Own-License",
+            "recommendedSizes": [
+                "Standard_D2_v2",
+                "Standard_D3_v2",
+                "Standard_D4_v2"
+            ],
             "constraints": {
               "allowedSizes": [
                 "Standard_D2_v2",
                 "Standard_D3_v2",
                 "Standard_D4_v2",
-                "Standard_D5_v2"
+                "Standard_D5_v2",
+                "Standard_D12_v2"
               ],
               "excludedSizes": []
             },
@@ -78,61 +85,146 @@
               "sku": "2012-R2-Datacenter"
             },
             "count": 1
-          },          
+          },
           {
-            "name": "dbSize",
-            "type": "Microsoft.Common.DropDown",
-            "label": "MSSQL Database Size",
-            "defaultValue": "Standard-S0 (10 DTUs, $15/MONTH)",
+            "name": "managerPort",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Manager Port",
+            "defaultValue": "443",
             "constraints": {
-              "allowedValues": [
-                {
-                  "label": "Standard-S0 (10 DTUs, $15/MONTH)",
-                  "value": "Standard-S0"
-                },
-                {
-                  "label": "Standard-S1 (20 DTUs, $28/MONTH)",
-                  "value": "Standard-S1"
-                },
-                {
-                  "label": "Standard-S2 (50 DTUs, $70/MONTH)",
-                  "value": "Standard-S2"
-                },
-                {
-                  "label": "Standard-S3 (100 DTUs, $140/MONTH)",
-                  "value": "Standard-S3"
-                }
-              ]
+              "required": true
             }
+          },
+          {
+            "name": "heartbeatPort",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Heartbeat Port",
+            "toolTip": "",
+            "defaultValue": "4120",
+            "constraints": {
+              "required": true
+            }
+          },
+          {
+            "name": "managerAddress",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Manager Address",
+            "toolTip": "You can leave it blank to use IP as the manager address.",
+            "defaultValue": "",       
+            "constraints": {
+              "required": false
+            }
+          },
+          {
+            "name": "nodeConfig",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Manager Node Config",
+            "defaultValue": "New Node with Empty Database",
+            "toolTip": "<strong>New Node with Empty Database:</strong> Install with a pure uninstalled database.<br/><br/><b>New Node with Existing Installation:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
+            "constraints": {
+                "required": true,
+                  "allowedValues": [
+                  {
+                      "label": "New Node with Empty Database",
+                      "value": "new"
+                  },
+                  {
+                      "label": "New Node with Existing Installation",
+                      "value": "second"
+                  },
+                  {
+                      "label": "Upgrade",
+                      "value": "upgrade"
+                  },
+                  {
+                      "label": "Fresh Install",
+                      "value": "fresh"
+                  }
+                  ]
+              }          
           }
         ]
       },
       {
-        "name": "dsmDB",
-        "label": "Trend Micro DSM - Database",
+        "name": "newDSMDB",
+        "label": "Trend Micro DSM - New Database",
         "subLabel": {
           "preValidation": "Configure Database Settings",
           "postValidation": "Done"
         },
-        "bladeTitle": "DSM Database Settings",
-        "elements": [
+        "bladeTitle": "DSM Database Settings for New Database",
+         "elements": [
+          {
+            "name": "newDBdescription",
+            "type": "Microsoft.Common.Section",
+            "label": "If you want to have a new MSSQL server for the DSM, please choose 'Enable' to 'Yes' , and fill in this page. We'll create a MSSQL server for you."
+          },
+          {
+            "name": "enableNewDB",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Enable",
+            "defaultValue": "No",
+            "toolTip": "",
+            "constraints": {
+                "allowedValues": [
+                {
+                    "label": "Yes",
+                    "value": "yes"
+                },
+                {
+                    "label": "No",
+                    "value": "no"
+                }
+                ]
+            }
+          },
+          {
+            "name": "dbSize",
+            "type": "Microsoft.Common.DropDown",
+            "label": "MSSQL Database Size",
+            "defaultValue": "",
+            "toolTip": "Choose database size",
+            "constraints": {
+              "required": false,
+              "allowedValues": [
+                {
+                  "label": "Standard-S0",
+                  "value": "Standard-S0"
+                },
+                {
+                  "label": "Standard-S1",
+                  "value": "Standard-S1"
+                },
+                {
+                  "label": "Standard-S2",
+                  "value": "Standard-S2"
+                },
+                {
+                  "label": "Standard-S3",
+                  "value": "Standard-S3"
+                }
+              ]
+            }
+          },
           {
             "name": "dbName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Database Name",            
+            "label": "Database Name", 
+            "defaultValue": "dsm",
             "constraints": {
-              "required": true,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "required": false,
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
           },
           {
             "name": "dbAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Database Admin Name",            
+            "label": "Database Admin Name",
+            "defaultValue": "dbadmin",
             "constraints": {
-              "required": true,
-              "regex": "^[a-z][a-z0-9]{0,9}$",
+              "required": false,
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
               "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
             }
           },
@@ -144,12 +236,71 @@
               "confirmPassword": "Confirm password"
             },
             "constraints": {
-              "required": true,
+              "required": false,
               "regex": "",
               "validationMessage": ""
             },
             "options": {
               "hideConfirmation": false
+            }
+          }
+        ]       
+      },
+      {
+        "name": "existDSMDB",
+        "label": "Trend Micro DSM - Existing Database",
+        "subLabel": {
+          "preValidation": "Configure Database Settings",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "DSM Database Settings for Existing Database",
+        "elements": [
+          {
+            "name": "existingDBdescription",
+            "type": "Microsoft.Common.Section",
+            "label": "If you want to use your created MSSQL server for the DSM, please fill in this page."
+          },
+          {
+            "name": "dbHostname",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Hostname",
+            "toolTip": "Your currently running Microsoft SQL Server hostname"
+          },
+          {
+            "name": "dbName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Name", 
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dbAdminName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Database Admin Name",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
+              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
+            }
+          },
+          {
+            "name": "dbAdminPassword",
+            "type": "Microsoft.Common.PasswordBox",
+            "label": {
+              "password": "Database Admin Password"
+            },
+            "constraints": {
+              "required": false,
+              "regex": "",
+              "validationMessage": ""
+            },
+            "options": {
+              "hideConfirmation": true
             }
           }
         ]
@@ -166,7 +317,8 @@
           {
             "name": "dsmAdminName",
             "type": "Microsoft.Common.TextBox",
-            "label": "Deep Security Admin Name",            
+            "label": "Deep Security Admin Name",
+            "defaultValue": "admin",          
             "constraints": {
               "required": true,
               "regex": "^[a-z][a-z0-9]{0,9}$",
@@ -226,7 +378,7 @@
             "label": "Storage account",
             "toolTip": "",
             "defaultValue": {
-              "name": "storage01",
+              "name": "dsmstorage01",
               "type": "Premium_LRS"
             }
           },
@@ -260,18 +412,6 @@
                   "minAddressCount": 12,
                   "requireContiguousAddresses": true
                 }
-              },
-              "VPNsubnet": {
-                "label": "VPN Clients subnet",
-                "defaultValue": {
-                  "name": "vpnsubnet",
-                  "addressPrefixSize": "/26"
-                },
-                "constraints": {
-                  "minAddressPrefixSize": "/26",
-                  "minAddressCount": 8,
-                  "requireContiguousAddresses": true
-                }
               }
             }
           }
@@ -282,22 +422,31 @@
       "location": "[location()]",
       "deploymentName": "[basics('deploymentName')]",
       "vmAdminName": "[basics('userName')]",
-      "vmAdminPassword": "[basics('admPassword')]",
-      "vmSize": "[steps('dsmVMDBSize').vmSize]",
+      "vmAuthType": "[basics('admPassword').authenticationType]",
+      "vmAdminSshPublicKey": "[basics('admPassword').sshPublicKey]",
+      "vmAdminPassword": "[basics('admPassword').password]",
+      "vmSize": "[steps('dsmVMSizeAndPortal').vmSize]",
+      "managerPort": "[steps('dsmVMSizeAndPortal').managerPort]",
+      "heartbeatPort": "[steps('dsmVMSizeAndPortal').heartbeatPort]",
+      "managerAddress": "[steps('dsmVMSizeAndPortal').managerAddress]",
+      "nodeConfig": "[steps('dsmVMSizeAndPortal').nodeConfig]",
       "dsmAdminName": "[steps('dsmCredential').dsmAdminName]",
-      "dsmAdminPassword": "[steps('dsmCredential').dsmAdminPassword]",      
-      "dbName": "[steps('dsmDB').dbName]",
-      "dbAdminName": "[steps('dsmDB').dbAdminName]",
-      "dbAdminPassword": "[steps('dsmDB').dbAdminPassword]",
+      "dsmAdminPassword": "[steps('dsmCredential').dsmAdminPassword]",
+      "new_dbSize": "[steps('newDSMDB').dbSize]",
+      "new_dbName": "[steps('newDSMDB').dbName]",
+      "new_dbAdminName": "[steps('newDSMDB').dbAdminName]",
+      "new_dbAdminPassword": "[steps('newDSMDB').dbAdminPassword]",
+      "exist_dbHostname": "[steps('existDSMDB').dbHostname]",
+      "exist_dbName": "[steps('existDSMDB').dbName]",
+      "exist_dbAdminName": "[steps('existDSMDB').dbAdminName]",
+      "exist_dbAdminPassword": "[steps('existDSMDB').dbAdminPassword]",
       "publicIPAddressDomainName": "[steps('advSettings').publicIPAddressDomainName]",
       "storageAcc": "[steps('advSettings').storageAcc.name]",
       "networkName": "[steps('advSettings').vnetwork.name]",
       "networkExists": "[steps('advSettings').vnetwork.newOrExisting]",
       "networkAddress": "[steps('advSettings').vnetwork.addressPrefix]",
       "subnetVMName": "[steps('advSettings').vnetwork.subnets.VMsubnet.name]",
-      "subnetVPNName": "[steps('advSettings').vnetwork.subnets.VPNsubnet.name]",
-      "subnetVMNaddress": "[steps('advSettings').vnetwork.subnets.VMsubnet.addressPrefix]",
-      "subnetVPNaddress": "[steps('advSettings').vnetwork.subnets.VPNsubnet.addressPrefix]"
+      "subnetVMNaddress": "[steps('advSettings').vnetwork.subnets.VMsubnet.addressPrefix]"
     }
   }
 }
