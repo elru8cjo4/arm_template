@@ -129,141 +129,12 @@
             "constraints": {
               "required": false
             }
-          },
-          {
-            "name": "nodeConfig",
-            "type": "Microsoft.Common.DropDown",
-            "label": "Manager Node Config",
-            "defaultValue": "New Node with Empty Database",
-            "toolTip": "<strong>New Node with Empty Database:</strong> Install with a pure uninstalled database.<br/><br/><b>New Node with Existing Installation:</b> Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/><b>Upgrade: </b> Keep your existing data but replace your current Deep Security Manager with this installation.<br/><br/><b>Fresh Install: </b>Overwrite your existing data and replace your current Deep Security Manager with this installation.",
-            "constraints": {
-                "required": true,
-                  "allowedValues": [
-                  {
-                      "label": "New Node with Empty Database",
-                      "value": "new"
-                  },
-                  {
-                      "label": "New Node with Existing Installation",
-                      "value": "second"
-                  },
-                  {
-                      "label": "Upgrade",
-                      "value": "upgrade"
-                  },
-                  {
-                      "label": "Fresh Install",
-                      "value": "fresh"
-                  }
-                  ]
-              }          
           }
         ]
       },
       {
-        "name": "newDSMDB",
-        "label": "Trend Micro DSM - New Database",
-        "subLabel": {
-          "preValidation": "Configure Database Settings",
-          "postValidation": "Done"
-        },
-        "bladeTitle": "DSM Database Settings for New Database",
-         "elements": [
-          {
-            "name": "newDBdescription",
-            "type": "Microsoft.Common.Section",
-            "label": "If you want to have a new MSSQL server for the DSM, please choose 'Enable' to 'Yes' , and fill in this page. We'll create a MSSQL server for you."
-          },
-          {
-            "name": "enableNewDB",
-            "type": "Microsoft.Common.OptionsGroup",
-            "label": "Enable",
-            "defaultValue": "No",
-            "toolTip": "",
-            "constraints": {
-                "allowedValues": [
-                {
-                    "label": "Yes",
-                    "value": "yes"
-                },
-                {
-                    "label": "No",
-                    "value": "no"
-                }
-                ]
-            }
-          },
-          {
-            "name": "dbSize",
-            "type": "Microsoft.Common.DropDown",
-            "label": "MSSQL Database Size",
-            "defaultValue": "",
-            "toolTip": "Choose database size",
-            "constraints": {
-              "required": false,
-              "allowedValues": [
-                {
-                  "label": "Standard-S0",
-                  "value": "Standard-S0"
-                },
-                {
-                  "label": "Standard-S1",
-                  "value": "Standard-S1"
-                },
-                {
-                  "label": "Standard-S2",
-                  "value": "Standard-S2"
-                },
-                {
-                  "label": "Standard-S3",
-                  "value": "Standard-S3"
-                }
-              ]
-            }
-          },
-          {
-            "name": "dbName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Database Name", 
-            "defaultValue": "dsm",
-            "constraints": {
-              "required": false,
-              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
-              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
-            }
-          },
-          {
-            "name": "dbAdminName",
-            "type": "Microsoft.Common.TextBox",
-            "label": "Database Admin Name",
-            "defaultValue": "dbadmin",
-            "constraints": {
-              "required": false,
-              "regex": "^$|^[a-z][a-z0-9]{0,9}$",
-              "validationMessage": "Only lowercase letters and numbers are allowed, and the value must be 1-10 characters long and starts with a letter."
-            }
-          },
-          {
-            "name": "dbAdminPassword",
-            "type": "Microsoft.Common.PasswordBox",
-            "label": {
-              "password": "Database Admin Password",
-              "confirmPassword": "Confirm password"
-            },
-            "constraints": {
-              "required": false,
-              "regex": "",
-              "validationMessage": ""
-            },
-            "options": {
-              "hideConfirmation": false
-            }
-          }
-        ] 
-      },
-      {
-        "name": "existDSMDB",
-        "label": "Trend Micro DSM - Existing Database",
+        "name": "dbSettings",
+        "label": "Trend Micro DSM - Database",
         "subLabel": {
           "preValidation": "Configure Database Settings",
           "postValidation": "Done"
@@ -271,11 +142,11 @@
         "bladeTitle": "DSM Database Settings for Existing Database",
         "elements": [
           {
-            "name": "dbConfig",
+            "name": "createOrExisting",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "Enable",
+            "label": "MSSQL Operation",
             "defaultValue": "No",
-            "toolTip": "",
+            "toolTip": "Create: create a new Azure SQL<br/><br/>Use Existing: Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/>Purge Existing: Overwrite your existing data and replace your current Deep Security Manager with this installation.",
             "constraints": {
                 "allowedValues": [
                 {
