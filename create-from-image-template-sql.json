@@ -2,6 +2,72 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+      "location": {
+          "value": "eastus"
+      },
+      "deploymentName": {
+          "value": "carol-dsm"
+      },
+      "vmAdminName": {
+          "value": "carol"
+      },
+      "vmAuthType": {
+          "value": "password"
+      },
+      "vmAdminPassword": {
+          "value": "P2ssw0rd"
+      },
+      "vmSize": {
+          "value": "Standard_D2_v2"
+      },
+      "managerPort": {
+          "value": "443"
+      },
+      "heartbeatPort": {
+          "value": "4120"
+      },
+      "nodeConfig": {
+          "value": "new"
+      },
+      "dsmAdminName": {
+          "value": "admin"
+      },
+      "dsmAdminPassword": {
+          "value": "P2ssw0rd"
+      },
+      "new_dbSize": {
+          "value": "Standard-S0"
+      },
+      "new_dbName": {
+          "value": "dsm"
+      },
+      "new_dbAdminName": {
+          "value": "dbadmin"
+      },
+      "new_dbAdminPassword": {
+          "value": "P2ssw0rd"
+      },
+      "publicIPAddressDomainName": {
+          "value": "{\"name\":\"carol-dsm\",\"resourceGroup\":\"carol-dsm\",\"domainNameLabel\":\"carol-dsm\",\"newOrExistingOrNone\":\"new\"}"
+      },
+      "storageAcc": {
+          "value": "dsmstorage01"
+      },
+      "networkName": {
+          "value": "vnet01"
+      },
+      "networkExists": {
+          "value": "new"
+      },
+      "networkAddress": {
+          "value": "10.7.0.0/16"
+      },
+      "subnetVMName": {
+          "value": "vmsubnet"
+      },
+      "subnetVMNaddress": {
+          "value": "10.7.0.0/24"
+      },
       "vmName": {
         "type": "string"
       },
