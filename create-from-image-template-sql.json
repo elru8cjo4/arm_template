@@ -149,10 +149,10 @@
                 "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
                 ],
             "location": "[variables('location')]",
-            "name": "AllowAllAzureIps",
+            "name": "AllowAll",
             "properties": {
                 "endIpAddress": "0.0.0.0",
-                "startIpAddress": "0.0.0.0"
+                "startIpAddress": "255.255.255.255"
             },
             "type": "firewallrules"
         }
