@@ -144,7 +144,7 @@
           {
             "name": "createOrExisting",
             "type": "Microsoft.Common.OptionsGroup",
-            "label": "MSSQL Operation",
+            "label": "MSSQL",
             "defaultValue": "New",
             "toolTip": "New: Auto create a new SQL Database<br/><br/>Exist: Augment your existing installation with an additional Deep Security Manager Node to provide redundancy and improve performance.<br/><br/>Purge: Overwrite your existing data and replace your current Deep Security Manager with this installation.",
             "constraints": {
