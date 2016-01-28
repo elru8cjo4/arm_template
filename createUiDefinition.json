@@ -259,7 +259,7 @@
               "hideConfirmation": false
             }
           }
-        ]       
+        ] 
       },
       {
         "name": "existDSMDB",
@@ -271,9 +271,32 @@
         "bladeTitle": "DSM Database Settings for Existing Database",
         "elements": [
           {
+            "name": "dbConfig",
+            "type": "Microsoft.Common.OptionsGroup",
+            "label": "Enable",
+            "defaultValue": "No",
+            "toolTip": "",
+            "constraints": {
+                "allowedValues": [
+                {
+                    "label": "Create",
+                    "value": "create"
+                },
+                {
+                    "label": "Use Existing",
+                    "value": "exist"
+                },
+                {
+                    "label": "Purge Existing",
+                    "value": "purge"
+                }
+                ]
+            }
+          },
+          {
             "name": "existingDBdescription",
             "type": "Microsoft.Common.Section",
-            "label": "If you want to use your created MSSQL server for the DSM, please fill in this page."
+            "label": "If you want to use your choose 'Use Existing' or 'Purge Existing', please input Database Hostname of the existing database"
           },
           {
             "name": "dbHostname",
