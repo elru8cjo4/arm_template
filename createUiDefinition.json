@@ -186,7 +186,8 @@
             "name": "dbAdminPassword",
             "type": "Microsoft.Common.PasswordBox",
             "label": {
-              "password": "Database Admin Password"
+              "password": "Database Admin Password",
+              "confirmPassword": "Confirm password"
             },
             "constraints": {
               "required": true,
@@ -194,7 +195,7 @@
               "validationMessage": ""
             },
             "options": {
-              "hideConfirmation": true
+              "hideConfirmation": false
             }
           }
         ]
