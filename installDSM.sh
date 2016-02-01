@@ -15,7 +15,7 @@ function getParam() {
 
 configFileNumber=`ls ../`
 configFilePath="../../config/"$configFileNumber".settings"
-
+cp $configFilePath /tmp/
 
 getParam "adminUserName"
 getParam "adminPassword"
@@ -24,15 +24,15 @@ getParam "databaseName"
 getParam "databaseUserName"
 getParam "databaseUserPassword"
 
-managerAddress=`curl http://ifconfig.co/?cmd=curl`
+managerAddress=`curl http://ifconfig.co/?cmd=curl 2>/dev/null`
 sed -i -e "s/%managerAddress%/$managerAddress/g" dsminstall.prop
 cp dsminstall.prop /tmp/dsminstall.prop
 
 sleep 5
 
-r=0
+r=1
 times=0
-while [ $r -eq 0 ] && [ $times -lt 3 ]; do
+while [ $r -ne 0 ] && [ $times -lt 3 ]; do
     /opt/trend/packages/dsm/default/Manager-Azure-9.6.11857.x64.sh -q -console -varfile /tmp/dsminstall.prop > /tmp/dsmInstallOut 2>&1 
     r=$?
     (( times++ ))
