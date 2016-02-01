@@ -274,6 +274,19 @@
               "priority": 1300,
               "direction": "Inbound"
             }
+          },
+          {
+            "name": "allow-inbound-webinstaller",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1400,
+              "direction": "Inbound"
+            }
           }
         ]
       }
@@ -304,7 +317,7 @@
                     "caching": "ReadWrite",
                     "createOption": "FromImage",
                     "image": {
-                        "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSM-osDisk.08a874e4-56e6-4f7a-9678-00e900bdcb3a.vhd"
+                        "uri": "https://caroltemplate9128.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSMImage-osDisk.ad49218b-cf9c-4717-a5d3-d9b7626883f8.vhd"
                     },
                     "vhd": {
                         "uri": "[concat('https://caroltemplate9128.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/',variables('vmName'),'-osdisk.vhd')]"
@@ -325,7 +338,7 @@
         }
     }, {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(variables('vmName'),'/echoParams')]",
+        "name": "[concat(variables('vmName'),'/installDSM')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -337,10 +350,10 @@
             "typeHandlerVersion": "1.2",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/echoParams.sh",
+                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/installDSM.sh",
                     "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/dsminstall.prop"
                 ],
-                "commandToExecute": "sh echoParams.sh",
+                "commandToExecute": "sh installDSM.sh",
                 "vmName": "[variables('vmName')]",
                 "adminUserName": "[parameters('dsmAdminName')]",
                 "adminPassword": "[parameters('dsmAdminPassword')]",
