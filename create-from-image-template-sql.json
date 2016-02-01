@@ -147,11 +147,11 @@
             "apiVersion": "2014-04-01-preview",
             "dependsOn": [
                 "[concat('Microsoft.Sql/servers/', variables('serverName'))]"
-                ],
+            ],
             "location": "[variables('location')]",
-            "name": "AllowAll",
+            "name": "AllowAllAzureIps",
             "properties": {
-                "endIpAddress": "255.255.255.255",
+                "endIpAddress": "0.0.0.0",
                 "startIpAddress": "0.0.0.0"
             },
             "type": "firewallrules"
