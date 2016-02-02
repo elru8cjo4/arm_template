@@ -15,7 +15,7 @@ function getParam() {
 
 configFileNumber=`ls ../`
 configFilePath="../../config/"$configFileNumber".settings"
-cp $configFilePath /tmp/
+cp $configFilePath /opt/trend/packages/dsm/default/0.settings
 
 getParam "adminUserName"
 getParam "adminPassword"
