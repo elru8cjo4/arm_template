@@ -108,8 +108,7 @@
         "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
         "storageAccountName": "[concat(substring(replace(parameters('deploymentName'),'-',''),0,6),substring(uniqueString(parameters('deploymentName')),0,3))]",
         "storageAccountType": "Standard_LRS",
-        "serverName": "[concat(parameters('deploymentName'),'-sql')]",
-        "databaseServer": "[reference(concat('Microsoft.Sql/servers/', variables('serverName'))).fullyQualifiedDomainName]"
+        "serverName": "[concat(parameters('deploymentName'),'-sql')]"
     },
     "resources": [
       {
@@ -359,7 +358,7 @@
                 ],
                 "commandToExecute": "sh installDSM.sh",
                 "vmName": "[variables('vmName')]",
-                "databaseServer": "[variables('databaseServer')]",
+                "databaseServer": "[reference(concat('Microsoft.Sql/servers/', variables('serverName'))).fullyQualifiedDomainName]",
                 "databaseName": "[parameters('dbName')]"
             },
             "protectedSettings": {
