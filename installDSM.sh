@@ -24,7 +24,14 @@ getParam "databaseName"
 getParam "databaseUserName"
 getParam "databaseUserPassword"
 
-managerAddress=`curl http://ifconfig.co/?cmd=curl 2>/dev/null`
+# Deal with manager address
+fqdn=`AzureVMMetadata.py publicIPDomainNameLabel`
+location=`AzureVMMetadata.py location`
+if [ "$fqdn" != "" ]; then
+    managerAddress=$fqdn"."$location".cloudapp.azure.com"
+else
+    managerAddress=`curl http://ifconfig.co/?cmd=curl 2>/dev/null`
+fi
 sed -i -e "s/%managerAddress%/$managerAddress/g" $installFilePath
 
 sleep 5
