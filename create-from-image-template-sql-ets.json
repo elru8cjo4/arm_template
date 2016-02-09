@@ -276,7 +276,7 @@
             }
           },
           {
-            "name": "allow-inbound-webinstaller",
+            "name": "allow-inbound-dsmwebinstaller",
             "properties": {
               "protocol": "Tcp",
               "sourcePortRange": "*",
@@ -317,7 +317,7 @@
                     "caching": "ReadWrite",
                     "createOption": "FromImage",
                     "image": {
-                        "uri": "https://caroltemplate.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSMImage-osDisk.ad49218b-cf9c-4717-a5d3-d9b7626883f8.vhd"
+                        "uri": "https://caroltemplate.blob.core.windows.net/system/Microsoft.Compute/Images/vhds/DSMAPP-20160204-1-osDisk.d7bd7936-590e-47c2-a567-69f7296bf014.vhd"
                     },
                     "vhd": {
                         "uri": "[concat('https://caroltemplate.blob.core.windows.net/vmcontainerd48fed07-756e-4dfe-a737-8ea245d8289f/',variables('vmName'),'-osdisk.vhd')]"
@@ -350,8 +350,8 @@
             "typeHandlerVersion": "1.2",
             "settings": {
                 "fileUris": [
-                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/installDSM.sh",
-                    "https://raw.githubusercontent.com/elru8cjo4/arm_template/master/dsminstall.prop"
+                    "https://deepsecurityazure.blob.core.windows.net:443/dsmtemplate/installDSM.sh",
+                    "https://deepsecurityazure.blob.core.windows.net:443/dsmtemplate/dsminstall.prop"
                 ],
                 "commandToExecute": "sh installDSM.sh",
                 "vmName": "[variables('vmName')]",
@@ -362,7 +362,14 @@
                 "databaseUserName": "[parameters('new_dbAdminName')]",
                 "databaseUserPassword": "[parameters('new_dbAdminPassword')]",
                 "refDatabaseServer": "[reference(concat('Microsoft.Sql/servers/', variables('serverName'))).fullyQualifiedDomainName]",
-                "subscriptionId": "[subscription().subscriptionId]"
+                "subscriptionId": "[subscription().subscriptionId]",
+                "licenseMode": "10",
+                "vmsize": "[parameters('vmSize')]"
+            },
+            "protectedSettings": {
+                "adminUserName": "[parameters('dsmAdminName')]",
+                "adminPassword": "[parameters('dsmAdminPassword')]",
+                "licenseMode": "10"
             }
         }
     }]
