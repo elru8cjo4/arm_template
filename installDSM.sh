@@ -1,17 +1,9 @@
-getJsonValPre="['runtimeSettings'][0]['handlerSettings']['publicSettings']"
-
-function getJsonVal () {
-    python -c "import json,sys;sys.stdout.write(json.dumps(json.load(sys.stdin
-)$1))";
-}
-
 installFilePath="/tmp/dsminstall.prop"
 installLogPath="/opt/trend/dsm_app/dsm_azure_app/azure_install.log"
 
 function getParam() {
     local key=$1
-    local paramValue=`cat $configFilePath | getJsonVal "$getJsonValPre['$key']   
-" | sed 's/"//g'`
+    local paramValue=`AzureVMMetadata.py $key`
     sed -i -e "s/%$key%/$paramValue/g" $installFilePath
     eval $key=$paramValue
 }
@@ -19,6 +11,10 @@ function getParam() {
 configFileNumber=`ls ../`
 configFilePath="../../config/"$configFileNumber".settings"
 cp $configFilePath /opt/trend/packages/dsm/default/0.settings
+
+#restart web installer to load setting files.
+ps aux | grep run.py | head -1 | awk '{print "kill "$2}' | sh
+
 
 cp dsminstall.prop $installFilePath
 getParam "adminUserName"

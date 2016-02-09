@@ -359,7 +359,9 @@
                 "commandToExecute": "sh installDSM.sh",
                 "vmName": "[variables('vmName')]",
                 "databaseServer": "[reference(concat('Microsoft.Sql/servers/', variables('serverName'))).fullyQualifiedDomainName]",
-                "databaseName": "[parameters('dbName')]"
+                "databaseName": "[parameters('dbName')]",
+                "publicIPDomainNameLabel": "[parameters('publicIPDomainNameLabel')]",
+                "location": "[variables('location')]"
             },
             "protectedSettings": {
                 "adminUserName": "[parameters('dsmAdminName')]",
